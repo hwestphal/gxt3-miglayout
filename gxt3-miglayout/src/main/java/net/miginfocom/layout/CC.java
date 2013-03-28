@@ -1,6 +1,5 @@
 package net.miginfocom.layout;
 
-import java.io.*;
 import java.util.ArrayList;
 /*
  * License (BSD):
@@ -38,7 +37,7 @@ import java.util.ArrayList;
 
 /** A simple value holder for one component's constraint.
  */
-public final class CC implements Externalizable
+public final class CC
 {
 	private static final BoundSize DEF_GAP = BoundSize.NULL_SIZE;    // Only used to denote default wrap/newline gap.
 
@@ -1811,23 +1810,4 @@ public final class CC implements Externalizable
 		newline = s == null ? (newline != null ? DEF_GAP : null) : s;
 	}
 
-	// ************************************************
-	// Persistence Delegate and Serializable combined.
-	// ************************************************
-
-	private Object readResolve() throws ObjectStreamException
-	{
-		return LayoutUtil.getSerializedObject(this);
-	}
-
-	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException
-	{
-		LayoutUtil.setSerializedObject(this, LayoutUtil.readAsXML(in));
-	}
-
-	public void writeExternal(ObjectOutput out) throws IOException
-	{
-		if (getClass() == CC.class)
-			LayoutUtil.writeAsXML(out, this);
-	}
 }

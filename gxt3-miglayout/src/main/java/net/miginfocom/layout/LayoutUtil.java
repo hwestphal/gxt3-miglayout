@@ -1,43 +1,7 @@
 package net.miginfocom.layout;
 
-import java.beans.*;
-import java.io.*;
-import java.util.IdentityHashMap;
 import java.util.TreeSet;
 import java.util.WeakHashMap;
-/*
- * License (BSD):
- * ==============
- *
- * Copyright (c) 2004, Mikael Grev, MiG InfoCom AB. (miglayout (at) miginfocom (dot) com)
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
- * Redistributions of source code must retain the above copyright notice, this list
- * of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright notice, this
- * list of conditions and the following disclaimer in the documentation and/or other
- * materials provided with the distribution.
- * Neither the name of the MiG InfoCom AB nor the names of its contributors may be
- * used to endorse or promote products derived from this software without specific
- * prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
- * IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
- * OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
- * OF SUCH DAMAGE.
- *
- * @version 1.0
- * @author Mikael Grev, MiG InfoCom AB
- *         Date: 2006-sep-08
- */
 
 /** A utility class that has only static helper methods.
  */
@@ -62,17 +26,6 @@ public final class LayoutUtil
 	private static volatile WeakHashMap<Object, Boolean> DT_MAP = null;      // The Containers that have design time. Value not used.
 	private static int eSz = 0;
 	private static int globalDebugMillis = 0;
-    public static final boolean HAS_BEANS = hasBeans();
-
-    private static boolean hasBeans()
-    {
-        try {
-            LayoutUtil.class.getClassLoader().loadClass("java.beans.Beans");
-            return true;
-        } catch (Throwable e) {
-            return false;
-        }
-    }
 
 	private LayoutUtil()
 	{
@@ -137,7 +90,7 @@ public final class LayoutUtil
 	public static boolean isDesignTime(ContainerWrapper cw)
 	{
 		if (DT_MAP == null)
-			return HAS_BEANS && Beans.isDesignTime();
+			return false;
 
 		if (cw != null && DT_MAP.containsKey(cw.getComponent()) == false)
 			cw = null;
@@ -179,18 +132,6 @@ public final class LayoutUtil
 				CR_MAP = new WeakHashMap<Object, String>(64);
 
 			CR_MAP.put(con, s);
-		}
-	}
-
-	/** Sets/add the persistence delegates to be used for a class.
-	 * @param c The class to set the registered deligate for.
-	 * @param del The new delegate or <code>null</code> to erase to old one.
-	 */
-	static synchronized void setDelegate(Class c, PersistenceDelegate del)
-	{
-		try {
-			Introspector.getBeanInfo(c, Introspector.IGNORE_ALL_BEANINFO).getBeanDescriptor().setValue("persistenceDelegate", del);
-		} catch (Exception ignored) {
 		}
 	}
 
@@ -457,110 +398,4 @@ public final class LayoutUtil
 		return (i != null && i[side] != null) ? i[side] : (getDefault ? PlatformDefaults.getPanelInsets(side) : UnitValue.ZERO);
 	}
 
-	/** Writes the objet and CLOSES the stream. Uses the persistence delegate registered in this class.
-	 * @param os The stream to write to. Will be closed.
-	 * @param o The object to be serialized.
-	 * @param listener The listener to recieve the exeptions if there are any. If <code>null</code> not used.
-	 */
-	static void writeXMLObject(OutputStream os, Object o, ExceptionListener listener)
-	{
-		ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
-		Thread.currentThread().setContextClassLoader(LayoutUtil.class.getClassLoader());
-
-		XMLEncoder encoder = new XMLEncoder(os);
-
-		if (listener != null)
-			encoder.setExceptionListener(listener);
-
-		encoder.writeObject(o);
-        encoder.close();    // Must be closed to write.
-
-		Thread.currentThread().setContextClassLoader(oldClassLoader);
-	}
-
-	private static ByteArrayOutputStream writeOutputStream = null;
-	/** Writes an object to XML.
-	 * @param out The boject out to write to. Will not be closed.
-	 * @param o The object to write.
-	 */
-	public static synchronized void writeAsXML(ObjectOutput out, Object o) throws IOException
-	{
-		if (writeOutputStream == null)
-			writeOutputStream = new ByteArrayOutputStream(16384);
-
-		writeOutputStream.reset();
-
-		writeXMLObject(writeOutputStream, o, new ExceptionListener() {
-			public void exceptionThrown(Exception e) {
-				e.printStackTrace();
-			}});
-
-		byte[] buf = writeOutputStream.toByteArray();
-
-		out.writeInt(buf.length);
-		out.write(buf);
-	}
-
-	private static byte[] readBuf = null;
-	/** Reads an object from <code>in</code> using the
-	 * @param in The object input to read from.
-	 * @return The object. Never <code>null</code>.
-	 * @throws IOException If there was a problem saving as XML
-	 */
-	public static synchronized Object readAsXML(ObjectInput in) throws IOException
-	{
-		if (readBuf == null)
-			readBuf = new byte[16384];
-
-		Thread cThread = Thread.currentThread();
-		ClassLoader oldCL = null;
-
-		try {
-			oldCL = cThread.getContextClassLoader();
-			cThread.setContextClassLoader(LayoutUtil.class.getClassLoader());
-		} catch(SecurityException ignored) {
-		}
-
-		Object o = null;
-		try {
-			int length = in.readInt();
-			if (length > readBuf.length)
-				readBuf = new byte[length];
-
-			in.readFully(readBuf, 0, length);
-
-			o = new XMLDecoder(new ByteArrayInputStream(readBuf, 0, length)).readObject();
-
-		} catch(EOFException ignored) {
-		}
-
-		if (oldCL != null)
-			cThread.setContextClassLoader(oldCL);
-
-		return o;
-	}
-
-	private static final IdentityHashMap<Object, Object> SER_MAP = new IdentityHashMap<Object, Object>(2);
-
-	/** Sets the serialized object and associates it with <code>caller</code>.
-	 * @param caller The object created <code>o</code>
-	 * @param o The just serialized object.
-	 */
-	public static void setSerializedObject(Object caller, Object o)
-	{
-		synchronized(SER_MAP) {
-			SER_MAP.put(caller, o);
-		}
-	}
-
-	/** Returns the serialized object that are associated with <code>caller</code>. It also removes it from the list.
-	 * @param caller The original creator of the object.
-	 * @return The object.
-	 */
-	public static Object getSerializedObject(Object caller)
-	{
-		synchronized(SER_MAP) {
-			return SER_MAP.remove(caller);
-		}
-	}
 }

@@ -1,42 +1,5 @@
 package net.miginfocom.layout;
 
-import java.beans.Encoder;
-import java.beans.Expression;
-import java.beans.PersistenceDelegate;
-import java.io.*;
-/*
- * License (BSD):
- * ==============
- *
- * Copyright (c) 2004, Mikael Grev, MiG InfoCom AB. (miglayout (at) miginfocom (dot) com)
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
- * Redistributions of source code must retain the above copyright notice, this list
- * of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright notice, this
- * list of conditions and the following disclaimer in the documentation and/or other
- * materials provided with the distribution.
- * Neither the name of the MiG InfoCom AB nor the names of its contributors may be
- * used to endorse or promote products derived from this software without specific
- * prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
- * IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
- * OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
- * OF SUCH DAMAGE.
- *
- * @version 1.0
- * @author Mikael Grev, MiG InfoCom AB
- *         Date: 2006-sep-08
- */
 
 /** A size that contains minimum, preferred and maximum size of type {@link UnitValue}.
  * <p>
@@ -46,7 +9,7 @@ import java.io.*;
  * <p>
  * You can create a BoundSize from a String with the use of {@link ConstraintParser#parseBoundSize(String, boolean, boolean)}
  */
-public class BoundSize implements Serializable
+public class BoundSize
 {
 	public static final BoundSize NULL_SIZE = new BoundSize(null, null);
 	public static final BoundSize ZERO_PIXEL = new BoundSize(UnitValue.ZERO, "0px");
@@ -229,45 +192,4 @@ public class BoundSize implements Serializable
 			throw new IllegalArgumentException("Size may not contain links");
 	}
 
-	static {
-        if(LayoutUtil.HAS_BEANS){
-            LayoutUtil.setDelegate(BoundSize.class, new PersistenceDelegate() {
-                protected Expression instantiate(Object oldInstance, Encoder out)
-                {
-                    BoundSize bs = (BoundSize) oldInstance;
-                    if (Grid.TEST_GAPS) {
-                        return new Expression(oldInstance, BoundSize.class, "new", new Object[] {
-                                bs.getMin(), bs.getPreferred(), bs.getMax(), bs.getGapPush(), bs.getConstraintString()
-                        });
-                    } else {
-                        return new Expression(oldInstance, BoundSize.class, "new", new Object[] {
-                                bs.getMin(), bs.getPreferred(), bs.getMax(), bs.getConstraintString()
-                        });
-                    }
-                }
-            });
-        }
-	}
-
-	// ************************************************
-	// Persistence Delegate and Serializable combined.
-	// ************************************************
-
-	private static final long serialVersionUID = 1L;
-
-	protected Object readResolve() throws ObjectStreamException
-	{
-		return LayoutUtil.getSerializedObject(this);
-	}
-
-	private void writeObject(ObjectOutputStream out) throws IOException
-	{
-		if (getClass() == BoundSize.class)
-			LayoutUtil.writeAsXML(out, this);
-	}
-
-	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
-	{
-		LayoutUtil.setSerializedObject(this, LayoutUtil.readAsXML(in));
-	}
 }

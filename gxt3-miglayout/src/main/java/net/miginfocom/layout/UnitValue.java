@@ -33,14 +33,11 @@ package net.miginfocom.layout;
  *         Date: 2006-sep-08
  */
 
-import java.beans.Encoder;
-import java.beans.Expression;
-import java.beans.PersistenceDelegate;
-import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
-public final class UnitValue implements Serializable
+public final class UnitValue
 {
 	private static final HashMap<String, Integer> UNIT_MAP = new HashMap<String, Integer>(32);
 
@@ -495,7 +492,7 @@ public final class UnitValue implements Serializable
 
 	public final UnitValue[] getSubUnits()
 	{
-		return subUnits != null ? subUnits.clone() : null;
+		return subUnits != null ? Arrays.copyOf(subUnits, subUnits.length) : null;
 	}
 
 	public final int getUnit()
@@ -595,43 +592,4 @@ public final class UnitValue implements Serializable
 		PlatformDefaults.setDefaultVerticalUnit(unit);
 	}
 
-	static {
-        if(LayoutUtil.HAS_BEANS){
-            LayoutUtil.setDelegate(UnitValue.class, new PersistenceDelegate() {
-                protected Expression instantiate(Object oldInstance, Encoder out)
-                {
-                    UnitValue uv = (UnitValue) oldInstance;
-                    String cs = uv.getConstraintString();
-                    if (cs == null)
-                        throw new IllegalStateException("Design time must be on to use XML persistence. See LayoutUtil.");
-
-                    return new Expression(oldInstance, ConstraintParser.class, "parseUnitValueOrAlign", new Object[] {
-                            uv.getConstraintString(), (uv.isHorizontal() ? Boolean.TRUE : Boolean.FALSE), null
-                    });
-                }
-            });
-        }
-	}
-
-	// ************************************************
-	// Persistence Delegate and Serializable combined.
-	// ************************************************
-
-	private static final long serialVersionUID = 1L;
-
-	private Object readResolve() throws ObjectStreamException
-	{
-		return LayoutUtil.getSerializedObject(this);
-	}
-
-	private void writeObject(ObjectOutputStream out) throws IOException
-	{
-		if (getClass() == UnitValue.class)
-			LayoutUtil.writeAsXML(out, this);
-	}
-
-	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
-	{
-		LayoutUtil.setSerializedObject(this, LayoutUtil.readAsXML(in));
-	}
 }

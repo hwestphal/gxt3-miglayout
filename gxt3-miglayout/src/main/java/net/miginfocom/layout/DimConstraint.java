@@ -1,6 +1,5 @@
 package net.miginfocom.layout;
 
-import java.io.*;
 /*
  * License (BSD):
  * ==============
@@ -37,7 +36,7 @@ import java.io.*;
 
 /** A simple value holder for a constraint for one dimension.
  */
-public final class DimConstraint implements Externalizable
+public final class DimConstraint
 {
 	/** How this entity can be resized in the dimension that this constraint represents.
 	 */
@@ -449,23 +448,4 @@ public final class DimConstraint implements Externalizable
 		return ret;
 	}
 
-	// ************************************************
-	// Persistence Delegate and Serializable combined.
-	// ************************************************
-
-	private Object readResolve() throws ObjectStreamException
-	{
-		return LayoutUtil.getSerializedObject(this);
-	}
-
-	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException
-	{
-		LayoutUtil.setSerializedObject(this, LayoutUtil.readAsXML(in));
-	}
-
-	public void writeExternal(ObjectOutput out) throws IOException
-	{
-		if (getClass() == DimConstraint.class)
-			LayoutUtil.writeAsXML(out, this);
-	}
 }

@@ -1,6 +1,5 @@
 package net.miginfocom.layout;
 
-import java.io.*;
 import java.util.ArrayList;
 
 /*
@@ -46,7 +45,7 @@ import java.util.ArrayList;
  * Note that there are two way to build this constraint. Through String (e.g. <code>"[100]3[200,fill]"</code> or through API (E.g.
  * <code>new AxisConstraint().size("100").gap("3").size("200").fill()</code>.
  */
-public final class AC implements Externalizable
+public final class AC
 {
 	private final ArrayList<DimConstraint> cList = new ArrayList<DimConstraint>(8);
 
@@ -542,23 +541,4 @@ public final class AC implements Externalizable
 		}
 	}
 
-	// ************************************************
-	// Persistence Delegate and Serializable combined.
-	// ************************************************
-
-	private Object readResolve() throws ObjectStreamException
-	{
-		return LayoutUtil.getSerializedObject(this);
-	}
-
-	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException
-	{
-		LayoutUtil.setSerializedObject(this, LayoutUtil.readAsXML(in));
-	}
-
-	public void writeExternal(ObjectOutput out) throws IOException
-	{
-		if (getClass() == AC.class)
-			LayoutUtil.writeAsXML(out, this);
-	}
 }
