@@ -11,6 +11,7 @@
 	
 	<modules>
 		<module>gxt3-miglayout</module>
+		<module>gxt3-miglayout-example</module>
 	</modules>
 
 	<properties>

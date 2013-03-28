@@ -1,0 +1,10 @@
+<module rename-to='Example'>
+	<inherits name='com.google.gwt.user.User' />
+	<inherits name='com.google.gwt.user.theme.standard.Standard' />
+	<inherits name='com.sencha.gxt.ui.GXT' />
+	<inherits name='net.miginfocom.layout.MigLayout' />
+	
+	<entry-point class='com.github.hwestphal.gxt3.miglayout.Example' />
+	
+	<source path='' />
+</module>
