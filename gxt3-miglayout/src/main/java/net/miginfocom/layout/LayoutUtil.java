@@ -1,7 +1,6 @@
 package net.miginfocom.layout;
 
 import java.util.TreeSet;
-import java.util.WeakHashMap;
 
 /** A utility class that has only static helper methods.
  */
@@ -22,8 +21,6 @@ public final class LayoutUtil
 	public static final int PREF = 1;
 	public static final int MAX = 2;
 
-	private static volatile WeakHashMap<Object, String> CR_MAP = null;
-	private static volatile WeakHashMap<Object, Boolean> DT_MAP = null;      // The Containers that have design time. Value not used.
 	private static int eSz = 0;
 	private static int globalDebugMillis = 0;
 
@@ -75,10 +72,6 @@ public final class LayoutUtil
 	 */
 	public static void setDesignTime(ContainerWrapper cw, boolean b)
 	{
-		if (DT_MAP == null)
-			DT_MAP = new WeakHashMap<Object, Boolean>();
-
-		DT_MAP.put((cw != null ? cw.getComponent() : null), b);
 	}
 
 	/** Returns if design time is turned on for a Container in {@link ContainerWrapper}.
@@ -89,14 +82,7 @@ public final class LayoutUtil
 	 */
 	public static boolean isDesignTime(ContainerWrapper cw)
 	{
-		if (DT_MAP == null)
-			return false;
-
-		if (cw != null && DT_MAP.containsKey(cw.getComponent()) == false)
-			cw = null;
-
-		Boolean b = DT_MAP.get(cw != null ? cw.getComponent() : null);
-		return b != null && b;
+		return false;
 	}
 
 	/** The size of an empty row or columns in a grid during design time.
@@ -127,12 +113,6 @@ public final class LayoutUtil
 	 */
 	static void putCCString(Object con, String s)
 	{
-		if (s != null && con != null && isDesignTime(null)) {
-			if (CR_MAP == null)
-				CR_MAP = new WeakHashMap<Object, String>(64);
-
-			CR_MAP.put(con, s);
-		}
 	}
 
 	/** Returns strings set with {@link #putCCString(Object, String)} or <code>null</code> if nothing is associated or
@@ -142,7 +122,7 @@ public final class LayoutUtil
 	 */
 	static String getCCString(Object con)
 	{
-		return CR_MAP != null ? CR_MAP.get(con) : null;
+		return null;
 	}
 
 	static void throwCC()

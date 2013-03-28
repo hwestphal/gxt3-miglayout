@@ -34,7 +34,6 @@ package net.miginfocom.layout;
  */
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public final class UnitValue
@@ -492,7 +491,12 @@ public final class UnitValue
 
 	public final UnitValue[] getSubUnits()
 	{
-		return subUnits != null ? Arrays.copyOf(subUnits, subUnits.length) : null;
+		if (subUnits == null) {
+			return null;
+		}
+		UnitValue[] res = new UnitValue[subUnits.length];
+		System.arraycopy(subUnits, 0, res, 0, subUnits.length);
+		return res;
 	}
 
 	public final int getUnit()
