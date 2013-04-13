@@ -1,7 +1,6 @@
 package net.miginfocom.layout;
 
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -9,7 +8,6 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeSet;
-import java.util.WeakHashMap;
 
 /** Holds components in a grid. Does most of the logic behind the layout manager.
  */
@@ -558,13 +556,17 @@ public final class Grid
 	public final int[] getWidth()
 	{
 		checkSizeCalcs();
-		return width.clone();
+		int[] res = new int[width.length];
+		System.arraycopy(width, 0, res, 0, width.length);
+		return res;
 	}
 
 	public final int[] getHeight()
 	{
 		checkSizeCalcs();
-		return height.clone();
+		int[] res = new int[height.length];
+		System.arraycopy(height, 0, res, 0, height.length);
+		return res;
 	}
 
 	private void checkSizeCalcs()
@@ -2276,76 +2278,22 @@ public final class Grid
 		return newArr;
 	}
 
-	private static WeakHashMap<Object, int[][]>[] PARENT_ROWCOL_SIZES_MAP = null;
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private static synchronized void putSizesAndIndexes(Object parComp, int[] sizes, int[] ixArr, boolean isRows)
 	{
-		if (PARENT_ROWCOL_SIZES_MAP == null)    // Lazy since only if designing in IDEs
-			PARENT_ROWCOL_SIZES_MAP = new WeakHashMap[] {new WeakHashMap(4), new WeakHashMap(4)};
-
-		PARENT_ROWCOL_SIZES_MAP[isRows ? 0 : 1].put(parComp, new int[][] {ixArr, sizes});
 	}
 
 	static synchronized int[][] getSizesAndIndexes(Object parComp, boolean isRows)
 	{
-		if (PARENT_ROWCOL_SIZES_MAP == null)
-			return null;
-
-		return (int[][]) PARENT_ROWCOL_SIZES_MAP[isRows ? 0 : 1].get(parComp);
+		return null;
 	}
 
-	private static WeakHashMap<Object, ArrayList<WeakCell>> PARENT_GRIDPOS_MAP = null;
 	private static synchronized void saveGrid(ComponentWrapper parComp, LinkedHashMap<Integer, Cell> grid)
 	{
-		if (PARENT_GRIDPOS_MAP == null)    // Lazy since only if designing in IDEs
-			PARENT_GRIDPOS_MAP = new WeakHashMap<Object, ArrayList<WeakCell>>();
-
-		ArrayList<WeakCell> weakCells = new ArrayList<WeakCell>(grid.size());
-
-		for (Map.Entry<Integer, Cell> e : grid.entrySet()) {
-			Cell cell = e.getValue();
-			Integer xyInt = e.getKey();
-			if (xyInt != null) {
-				int x = xyInt & 0x0000ffff;
-				int y = xyInt >> 16;
-
-				for (CompWrap cw : cell.compWraps)
-					weakCells.add(new WeakCell(cw.comp.getComponent(), x, y, cell.spanx, cell.spany));
-			}
-		}
-
-		PARENT_GRIDPOS_MAP.put(parComp.getComponent(), weakCells);
 	}
 
 	static synchronized HashMap<Object, int[]> getGridPositions(Object parComp)
 	{
-		ArrayList<WeakCell> weakCells = PARENT_GRIDPOS_MAP != null ? PARENT_GRIDPOS_MAP.get(parComp) : null;
-		if (weakCells == null)
-			return null;
-
-		HashMap<Object, int[]> retMap = new HashMap<Object, int[]>();
-
-		for (WeakCell wc : weakCells) {
-			Object component = wc.componentRef.get();
-			if (component != null)
-				retMap.put(component, new int[] {wc.x, wc.y, wc.spanX, wc.spanY});
-		}
-
-		return retMap;
+		return null;
 	}
 
-	private static class WeakCell
-	{
-		private final WeakReference<Object> componentRef;
-		private final int x, y, spanX, spanY;
-
-		private WeakCell(Object component, int x, int y, int spanX, int spanY)
-		{
-			this.componentRef = new WeakReference<Object>(component);
-			this.x = x;
-			this.y = y;
-			this.spanX = spanX;
-			this.spanY = spanY;
-		}
-	}
 }

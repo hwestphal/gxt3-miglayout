@@ -142,14 +142,7 @@ public final class PlatformDefaults
 	 */
 	public static int getCurrentPlatform()
 	{
-		final String os = System.getProperty("os.name");
-		if (os.startsWith("Mac OS")) {
-			return MAC_OSX;
-		} else if (os.startsWith("Linux")) {
-			return GNOME;
-		} else {
-			return WINDOWS_XP;
-		}
+		return WINDOWS_XP;
 	}
 
 	private PlatformDefaults()
@@ -226,11 +219,7 @@ public final class PlatformDefaults
 			case GNOME:
 				return 96;
 			case MAC_OSX:
-				try {
-					return System.getProperty("java.version").compareTo("1.6") < 0 ? 72 : 96; // Default DPI was 72 prior to JSE 1.6
-				} catch (Throwable t) {
-					return 72;
-				}
+				return 72;
 			default:
 				throw new IllegalArgumentException("Unknown platform: " + plaf);
 		}

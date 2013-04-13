@@ -27,11 +27,11 @@
  */
 package net.miginfocom.layout.gxt3;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.ArrayList;
 
 import net.miginfocom.layout.AC;
 import net.miginfocom.layout.ConstraintParser;
+import net.miginfocom.layout.Grid;
 import net.miginfocom.layout.LC;
 import net.miginfocom.layout.LayoutCallback;
 
@@ -42,7 +42,7 @@ import com.sencha.gxt.widget.core.client.container.InsertResizeContainer;
 
 public class MigLayoutContainer extends InsertResizeContainer {
 
-	private final List<LayoutCallback> layoutCallbacks = new LinkedList<LayoutCallback>();
+	private final ArrayList<LayoutCallback> layoutCallbacks = new ArrayList<LayoutCallback>();
 	private final LC layoutConstraints;
 	private final AC colConstraints;
 	private final AC rowConstraints;
@@ -107,7 +107,7 @@ public class MigLayoutContainer extends InsertResizeContainer {
 
 	@Override
 	protected void doLayout() {
-		// TODO implement
+		new Grid(new GwtContainerWrapper(this), layoutConstraints, rowConstraints, colConstraints, null, layoutCallbacks);
 	}
 
 }
