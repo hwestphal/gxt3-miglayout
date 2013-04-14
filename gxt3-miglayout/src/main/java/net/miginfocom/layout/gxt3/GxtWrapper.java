@@ -27,54 +27,14 @@
  */
 package net.miginfocom.layout.gxt3;
 
-import net.miginfocom.layout.ComponentWrapper;
-import net.miginfocom.layout.ContainerWrapper;
-
-import com.google.gwt.user.client.ui.IndexedPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.sencha.gxt.widget.core.client.Composite;
 
-class GwtContainerWrapper extends GwtComponentWrapper implements ContainerWrapper {
+class GxtWrapper extends Composite {
 
-	private final IndexedPanel container;
-
-	public GwtContainerWrapper(IndexedPanel container) {
-		super((Widget) container);
-		this.container = container;
-	}
-
-	@Override
-	public ComponentWrapper[] getComponents() {
-		ComponentWrapper[] components = new ComponentWrapper[getComponentCount()];
-		for (int i = 0; i < components.length; i++) {
-			components[i] = new GwtComponentWrapper(container.getWidget(i));
-		}
-		return components;
-	}
-
-	@Override
-	public int getComponentCount() {
-		return container.getWidgetCount();
-	}
-
-	@Override
-	public Object getLayout() {
-		return container;
-	}
-
-	@Override
-	public boolean isLeftToRight() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void paintDebugCell(int x, int y, int width, int height) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public int getComponetType(boolean disregardScrollPane) {
-		return TYPE_CONTAINER;
+	GxtWrapper(Widget widget) {
+		super();
+		initWidget(widget);
 	}
 
 }

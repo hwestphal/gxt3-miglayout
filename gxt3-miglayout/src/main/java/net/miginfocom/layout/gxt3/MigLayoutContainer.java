@@ -38,6 +38,8 @@ import net.miginfocom.layout.LayoutCallback;
 import com.google.gwt.uibinder.client.UiChild;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.Widget;
+import com.sencha.gxt.widget.core.client.Component;
 import com.sencha.gxt.widget.core.client.container.InsertResizeContainer;
 
 public class MigLayoutContainer extends InsertResizeContainer {
@@ -90,24 +92,29 @@ public class MigLayoutContainer extends InsertResizeContainer {
 		layoutCallbacks.remove(callback);
 	}
 
-	@UiChild(tagname = "child")
-	public void add(IsWidget child, String layoutData) {
-		if (child != null) {
-			child.asWidget().setLayoutData(layoutData);
+	@Override
+	public void insert(Widget child, int beforeIndex) {
+		if (child instanceof Component) {
+			super.insert(child, beforeIndex);
+		} else {
+			super.insert(new GxtWrapper(child), beforeIndex);
 		}
-		super.add(child);
 	}
 
-	public void insert(IsWidget w, int beforeIndex, String layoutData) {
-		if (w != null) {
-			w.asWidget().setLayoutData(layoutData);
-		}
-		super.insert(w, beforeIndex);
+	@UiChild(tagname = "child")
+	public void add(IsWidget child, String layoutData) {
+		child.asWidget().setLayoutData(layoutData);
+		add(child);
+	}
+
+	public void insert(IsWidget child, int beforeIndex, String layoutData) {
+		child.asWidget().setLayoutData(layoutData);
+		insert(child, beforeIndex);
 	}
 
 	@Override
 	protected void doLayout() {
-		new Grid(new GwtContainerWrapper(this), layoutConstraints, rowConstraints, colConstraints, null, layoutCallbacks);
+		new Grid(new GxtContainerWrapper(this), layoutConstraints, rowConstraints, colConstraints, null, layoutCallbacks);
 	}
 
 }

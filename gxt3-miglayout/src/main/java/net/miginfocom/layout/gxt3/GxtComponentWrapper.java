@@ -30,52 +30,52 @@ package net.miginfocom.layout.gxt3;
 import net.miginfocom.layout.ComponentWrapper;
 import net.miginfocom.layout.ContainerWrapper;
 
-import com.google.gwt.user.client.ui.IndexedPanel;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.sencha.gxt.widget.core.client.Component;
+import com.sencha.gxt.widget.core.client.container.Container;
 
-class GwtComponentWrapper implements ComponentWrapper {
+class GxtComponentWrapper implements ComponentWrapper {
 
-	private final Widget widget;
+	private final Component component;
 
-	public GwtComponentWrapper(Widget component) {
-		widget = component;
+	public GxtComponentWrapper(Component component) {
+		this.component = component;
 	}
 
 	@Override
 	public Object getComponent() {
-		return widget;
+		return component;
 	}
 
 	@Override
 	public int getX() {
-		return widget.getAbsoluteLeft();
+		return 0;
 	}
 
 	@Override
 	public int getY() {
-		return widget.getAbsoluteTop();
+		return 0;
 	}
 
 	@Override
 	public int getWidth() {
-		return widget.getOffsetWidth();
+		return component.getOffsetWidth();
 	}
 
 	@Override
 	public int getHeight() {
-		return widget.getOffsetHeight();
+		return component.getOffsetHeight();
 	}
 
 	@Override
 	public int getScreenLocationX() {
-		// TODO Auto-generated method stub
-		return 0;
+		return component.getAbsoluteLeft();
 	}
 
 	@Override
 	public int getScreenLocationY() {
-		// TODO Auto-generated method stub
-		return 0;
+		return component.getAbsoluteTop();
 	}
 
 	@Override
@@ -116,40 +116,36 @@ class GwtComponentWrapper implements ComponentWrapper {
 
 	@Override
 	public void setBounds(int x, int y, int width, int height) {
-		// TODO Auto-generated method stub
-
+		component.setBounds(x, y, width, height);
 	}
 
 	@Override
 	public boolean isVisible() {
-		return widget.isVisible();
+		return component.isVisible();
 	}
 
 	@Override
 	public int getBaseline(int width, int height) {
-		// TODO Auto-generated method stub
-		return 0;
+		return -1;
 	}
 
 	@Override
 	public boolean hasBaseline() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public ContainerWrapper getParent() {
-		Widget parent = widget.getParent();
-		if (parent instanceof IndexedPanel) {
-			return new GwtContainerWrapper((IndexedPanel) parent);
+		Widget parent = component.getParent();
+		if (parent instanceof Container) {
+			return new GxtContainerWrapper((Container) parent);
 		}
 		return null;
 	}
 
 	@Override
 	public float getPixelUnitFactor(boolean isHor) {
-		// TODO Auto-generated method stub
-		return 0;
+		return 1.0f;
 	}
 
 	@Override
@@ -166,20 +162,17 @@ class GwtComponentWrapper implements ComponentWrapper {
 
 	@Override
 	public int getScreenWidth() {
-		// TODO Auto-generated method stub
-		return 0;
+		return RootPanel.getBodyElement().getClientWidth();
 	}
 
 	@Override
 	public int getScreenHeight() {
-		// TODO Auto-generated method stub
-		return 0;
+		return RootPanel.getBodyElement().getClientHeight();
 	}
 
 	@Override
 	public String getLinkId() {
-		// TODO Auto-generated method stub
-		return null;
+		return component.getElement().getId();
 	}
 
 	@Override
@@ -190,18 +183,19 @@ class GwtComponentWrapper implements ComponentWrapper {
 
 	@Override
 	public int[] getVisualPadding() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void paintDebugOutline() {
-		// TODO Auto-generated method stub
-
+		// TODO support debug mode
 	}
 
 	@Override
 	public int getComponetType(boolean disregardScrollPane) {
+		if (component instanceof Container) {
+			return TYPE_CONTAINER;
+		}
 		return TYPE_UNKNOWN;
 	}
 
