@@ -122,27 +122,6 @@ public class MigLayoutContainer extends InsertResizeContainer {
 	}
 
 	@Override
-	public void insert(Widget child, int beforeIndex) {
-		// TODO determine the preferred size
-		ComponentWrapper wrapper = new GxtComponentWrapper(child, containerWrapper, 200, 25);
-		widgetMap.put(child, wrapper);
-
-		Object layoutData = child.getLayoutData();
-		CC cc = null;
-		if (layoutData instanceof String) {
-			cc = ConstraintParser.parseComponentConstraint(ConstraintParser.prepare((String) layoutData));
-		} else if (layoutData instanceof CC) {
-			cc = (CC) layoutData;
-		}
-		if (cc != null) {
-			ccMap.put(wrapper, cc);
-		}
-
-		child.getElement().getStyle().setPosition(Position.ABSOLUTE);
-		super.insert(child, beforeIndex);
-	}
-
-	@Override
 	public boolean remove(Widget child) {
 		ComponentWrapper wrapper = widgetMap.get(child);
 		if (wrapper != null) {
@@ -171,7 +150,21 @@ public class MigLayoutContainer extends InsertResizeContainer {
 
 	@Override
 	protected void onInsert(int index, Widget child) {
-		// no op, super applies margins
+		ComponentWrapper wrapper = new GxtComponentWrapper(child, containerWrapper, 200, 25);
+		widgetMap.put(child, wrapper);
+
+		Object layoutData = child.getLayoutData();
+		CC cc = null;
+		if (layoutData instanceof String) {
+			cc = ConstraintParser.parseComponentConstraint(ConstraintParser.prepare((String) layoutData));
+		} else if (layoutData instanceof CC) {
+			cc = (CC) layoutData;
+		}
+		if (cc != null) {
+			ccMap.put(wrapper, cc);
+		}
+
+		child.getElement().getStyle().setPosition(Position.ABSOLUTE);
 	}
 
 	void applyLayout(Widget widget, int x, int y, int width, int height) {
