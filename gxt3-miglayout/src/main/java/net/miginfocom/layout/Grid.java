@@ -1713,8 +1713,8 @@ public final class Grid
 				}
 
 				for (int i = LayoutUtil.MIN; i <= LayoutUtil.MAX; i++) {
-					horSizes[i] = getSize(hBS, i, true, hHint);
-					verSizes[i] = getSize(vBS, i, false, wHint > 0 ? wHint : horSizes[i]);
+					horSizes[i] = getSize(hBS, i, true, wHint);
+					verSizes[i] = getSize(vBS, i, false, hHint > 0 ? hHint : horSizes[i]);
 				}
 
 				correctMinMax(horSizes);
