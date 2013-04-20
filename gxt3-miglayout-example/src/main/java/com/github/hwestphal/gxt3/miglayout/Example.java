@@ -12,6 +12,7 @@ public class Example implements EntryPoint {
 	@Override
 	public void onModuleLoad() {
 		MigLayoutContainer container = new MigLayoutContainer();
+		container.setPixelSize(600, 300);
 
 		container.add(new Label("First Name"));
 		container.add(new TextField());

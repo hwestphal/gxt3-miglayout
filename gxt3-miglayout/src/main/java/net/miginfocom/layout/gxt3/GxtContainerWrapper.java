@@ -37,7 +37,7 @@ class GxtContainerWrapper extends GxtComponentWrapper implements ContainerWrappe
 
 	private final Container container;
 
-	public GxtContainerWrapper(Container container) {
+	GxtContainerWrapper(Container container) {
 		super(container);
 		this.container = container;
 	}

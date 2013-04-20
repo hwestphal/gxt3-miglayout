@@ -28,8 +28,12 @@
 package net.miginfocom.layout.gxt3;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.miginfocom.layout.AC;
+import net.miginfocom.layout.CC;
+import net.miginfocom.layout.ComponentWrapper;
 import net.miginfocom.layout.ConstraintParser;
 import net.miginfocom.layout.Grid;
 import net.miginfocom.layout.LC;
@@ -45,6 +49,7 @@ import com.sencha.gxt.widget.core.client.container.InsertResizeContainer;
 public class MigLayoutContainer extends InsertResizeContainer {
 
 	private final ArrayList<LayoutCallback> layoutCallbacks = new ArrayList<LayoutCallback>();
+	private final Map<ComponentWrapper, CC> ccMap = new HashMap<ComponentWrapper, CC>();
 	private final LC layoutConstraints;
 	private final AC colConstraints;
 	private final AC rowConstraints;
@@ -61,14 +66,6 @@ public class MigLayoutContainer extends InsertResizeContainer {
 		this(layoutConstraints, colConstraints, null);
 	}
 
-	public MigLayoutContainer(LC layoutConstraints, AC colConstraints, AC rowConstraints) {
-		this.layoutConstraints = layoutConstraints;
-		this.colConstraints = colConstraints;
-		this.rowConstraints = rowConstraints;
-		setElement(DOM.createDiv());
-		getContainerTarget().makePositionable(true);
-	}
-
 	public MigLayoutContainer(String layoutConstraints) {
 		this(layoutConstraints, null);
 	}
@@ -80,6 +77,14 @@ public class MigLayoutContainer extends InsertResizeContainer {
 	public MigLayoutContainer(String layoutConstraints, String colConstraints, String rowConstraints) {
 		this(ConstraintParser.parseLayoutConstraint(ConstraintParser.prepare(layoutConstraints)), ConstraintParser.parseColumnConstraints(ConstraintParser
 				.prepare(colConstraints)), ConstraintParser.parseRowConstraints(ConstraintParser.prepare(rowConstraints)));
+	}
+
+	public MigLayoutContainer(LC layoutConstraints, AC colConstraints, AC rowConstraints) {
+		this.layoutConstraints = layoutConstraints;
+		this.colConstraints = colConstraints;
+		this.rowConstraints = rowConstraints;
+		setElement(DOM.createDiv());
+		getContainerTarget().makePositionable();
 	}
 
 	public void addLayoutCallback(LayoutCallback callback) {
@@ -95,26 +100,40 @@ public class MigLayoutContainer extends InsertResizeContainer {
 	@Override
 	public void insert(Widget child, int beforeIndex) {
 		if (child instanceof Component) {
+			Component component = (Component) child;
+			CC cc = (CC) child.getLayoutData();
+			if (cc != null) {
+				ccMap.put(new GxtComponentWrapper(component), cc);
+			}
 			super.insert(child, beforeIndex);
 		} else {
-			super.insert(new GxtWrapper(child), beforeIndex);
+			Component component = new GxtWrapper(child);
+			component.setLayoutData(child.getLayoutData());
+			insert(component, beforeIndex);
 		}
+	}
+
+	@Override
+	public boolean remove(Widget child) {
+		ccMap.remove(new GxtComponentWrapper((Component) child));
+		return super.remove(child);
 	}
 
 	@UiChild(tagname = "child")
 	public void add(IsWidget child, String layoutData) {
-		child.asWidget().setLayoutData(layoutData);
+		child.asWidget().setLayoutData(ConstraintParser.parseComponentConstraint(layoutData));
 		add(child);
 	}
 
 	public void insert(IsWidget child, int beforeIndex, String layoutData) {
-		child.asWidget().setLayoutData(layoutData);
+		child.asWidget().setLayoutData(ConstraintParser.parseComponentConstraint(layoutData));
 		insert(child, beforeIndex);
 	}
 
 	@Override
 	protected void doLayout() {
-		new Grid(new GxtContainerWrapper(this), layoutConstraints, rowConstraints, colConstraints, null, layoutCallbacks);
+		new Grid(new GxtContainerWrapper(this), layoutConstraints, rowConstraints, colConstraints, ccMap, layoutCallbacks).layout(new int[] { 0, 0,
+				getOffsetWidth(true), getOffsetHeight(true) }, null, null, false, false);
 	}
 
 }

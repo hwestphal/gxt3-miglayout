@@ -29,9 +29,12 @@ package net.miginfocom.layout.gxt3;
 
 import net.miginfocom.layout.ComponentWrapper;
 import net.miginfocom.layout.ContainerWrapper;
+import net.miginfocom.layout.LayoutUtil;
+import net.miginfocom.layout.PlatformDefaults;
 
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.sencha.gxt.core.client.util.Size;
 import com.sencha.gxt.widget.core.client.Component;
 import com.sencha.gxt.widget.core.client.container.Container;
 
@@ -39,7 +42,7 @@ class GxtComponentWrapper implements ComponentWrapper {
 
 	private final Component component;
 
-	public GxtComponentWrapper(Component component) {
+	GxtComponentWrapper(Component component) {
 		this.component = component;
 	}
 
@@ -50,12 +53,12 @@ class GxtComponentWrapper implements ComponentWrapper {
 
 	@Override
 	public int getX() {
-		return 0;
+		return component.getElement().getLeft();
 	}
 
 	@Override
 	public int getY() {
-		return 0;
+		return component.getElement().getTop();
 	}
 
 	@Override
@@ -80,38 +83,32 @@ class GxtComponentWrapper implements ComponentWrapper {
 
 	@Override
 	public int getMinimumWidth(int hHint) {
-		// TODO Auto-generated method stub
-		return 0;
+		return 1;
 	}
 
 	@Override
 	public int getMinimumHeight(int wHint) {
-		// TODO Auto-generated method stub
-		return 0;
+		return 1;
 	}
 
 	@Override
 	public int getPreferredWidth(int hHint) {
-		// TODO Auto-generated method stub
-		return 0;
+		return component.getElement().getComputedWidth();
 	}
 
 	@Override
 	public int getPreferredHeight(int wHint) {
-		// TODO Auto-generated method stub
-		return 0;
+		return component.getElement().getComputedHeight();
 	}
 
 	@Override
 	public int getMaximumWidth(int hHint) {
-		// TODO Auto-generated method stub
-		return 0;
+		return LayoutUtil.INF;
 	}
 
 	@Override
 	public int getMaximumHeight(int wHint) {
-		// TODO Auto-generated method stub
-		return 0;
+		return LayoutUtil.INF;
 	}
 
 	@Override
@@ -150,14 +147,14 @@ class GxtComponentWrapper implements ComponentWrapper {
 
 	@Override
 	public int getHorizontalScreenDPI() {
-		// TODO Auto-generated method stub
-		return 0;
+		// TODO determine screen resolution
+		return PlatformDefaults.getDefaultDPI();
 	}
 
 	@Override
 	public int getVerticalScreenDPI() {
-		// TODO Auto-generated method stub
-		return 0;
+		// TODO determine screen resolution
+		return PlatformDefaults.getDefaultDPI();
 	}
 
 	@Override
@@ -177,8 +174,19 @@ class GxtComponentWrapper implements ComponentWrapper {
 
 	@Override
 	public int getLayoutHashCode() {
-		// TODO Auto-generated method stub
-		return 0;
+		StringBuilder code = new StringBuilder();
+		Size size = component.getElement().getStyleSize();
+		code.append(size.getWidth());
+		code.append(':');
+		code.append(size.getHeight());
+		code.append(':');
+		code.append(component.isVisible());
+		String id = getLinkId();
+		if (id != null) {
+			code.append(':');
+			code.append(id);
+		}
+		return code.toString().hashCode();
 	}
 
 	@Override
@@ -197,6 +205,22 @@ class GxtComponentWrapper implements ComponentWrapper {
 			return TYPE_CONTAINER;
 		}
 		return TYPE_UNKNOWN;
+	}
+
+	public int hashCode() {
+		return component.hashCode();
+	}
+
+	public boolean equals(Object obj) {
+		if (obj instanceof GxtComponentWrapper) {
+			return component.equals(((GxtComponentWrapper) obj).getComponent());
+		}
+		return false;
+	}
+
+	@Override
+	public String toString() {
+		return component.toString();
 	}
 
 }
