@@ -48,6 +48,25 @@ import com.sencha.gxt.core.client.Style.Side;
 import com.sencha.gxt.core.client.util.Rectangle;
 import com.sencha.gxt.widget.core.client.container.InsertResizeContainer;
 
+/**
+ * A layout container that lays out its children using the MiG Layout Manager.
+ * 
+ * <p/>
+ * Code Snippet:
+ * 
+ * <pre>
+ * MigLayoutContainer container = new MigLayoutContainer();
+ * container.add(new Label(&quot;First Name&quot;));
+ * container.add(new TextField());
+ * container.add(new Label(&quot;Surname&quot;), &quot;gap unrelated&quot;);
+ * container.add(new TextField(), &quot;wrap&quot;);
+ * container.add(new Label(&quot;Address&quot;));
+ * container.add(new TextField(), &quot;span, grow&quot;);
+ * RootPanel.get().add(container);
+ * </pre>
+ * 
+ * @see <a href="http://www.miglayout.com/">http://www.miglayout.com/</a>
+ */
 public class MigLayoutContainer extends InsertResizeContainer {
 
 	private final ArrayList<LayoutCallback> layoutCallbacks = new ArrayList<LayoutCallback>();
@@ -148,6 +167,11 @@ public class MigLayoutContainer extends InsertResizeContainer {
 		new Grid(new GxtContainerWrapper(this), layoutConstraints, rowConstraints, colConstraints, ccMap, layoutCallbacks).layout(new int[] {
 				getElement().getFrameWidth(Side.LEFT), getElement().getFrameWidth(Side.TOP), getOffsetWidth(true), getOffsetHeight(true) }, null, null, false,
 				false);
+	}
+
+	@Override
+	protected void onInsert(int index, Widget child) {
+		// no op, super applies margins
 	}
 
 	void applyLayout(Widget widget, int x, int y, int width, int height) {
