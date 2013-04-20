@@ -13,6 +13,7 @@ public class Example implements EntryPoint {
 	public void onModuleLoad() {
 		MigLayoutContainer container = new MigLayoutContainer();
 		container.setPixelSize(600, 300);
+		container.setBorders(true);
 
 		container.add(new Label("First Name"));
 		container.add(new TextField());

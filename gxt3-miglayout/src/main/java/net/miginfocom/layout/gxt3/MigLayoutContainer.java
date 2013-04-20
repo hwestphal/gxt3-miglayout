@@ -39,17 +39,21 @@ import net.miginfocom.layout.Grid;
 import net.miginfocom.layout.LC;
 import net.miginfocom.layout.LayoutCallback;
 
+import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.uibinder.client.UiChild;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
-import com.sencha.gxt.widget.core.client.Component;
+import com.sencha.gxt.core.client.Style.Side;
+import com.sencha.gxt.core.client.util.Rectangle;
 import com.sencha.gxt.widget.core.client.container.InsertResizeContainer;
 
 public class MigLayoutContainer extends InsertResizeContainer {
 
 	private final ArrayList<LayoutCallback> layoutCallbacks = new ArrayList<LayoutCallback>();
 	private final Map<ComponentWrapper, CC> ccMap = new HashMap<ComponentWrapper, CC>();
+	private final Map<Widget, ComponentWrapper> widgetMap = new HashMap<Widget, ComponentWrapper>();
+	private final GxtContainerWrapper containerWrapper;
 	private final LC layoutConstraints;
 	private final AC colConstraints;
 	private final AC rowConstraints;
@@ -83,8 +87,9 @@ public class MigLayoutContainer extends InsertResizeContainer {
 		this.layoutConstraints = layoutConstraints;
 		this.colConstraints = colConstraints;
 		this.rowConstraints = rowConstraints;
+		containerWrapper = new GxtContainerWrapper(this);
 		setElement(DOM.createDiv());
-		getContainerTarget().makePositionable();
+		getContainerTarget().makePositionable(true);
 	}
 
 	public void addLayoutCallback(LayoutCallback callback) {
@@ -99,41 +104,62 @@ public class MigLayoutContainer extends InsertResizeContainer {
 
 	@Override
 	public void insert(Widget child, int beforeIndex) {
-		if (child instanceof Component) {
-			Component component = (Component) child;
-			CC cc = (CC) child.getLayoutData();
-			if (cc != null) {
-				ccMap.put(new GxtComponentWrapper(component), cc);
-			}
-			super.insert(child, beforeIndex);
-		} else {
-			Component component = new GxtWrapper(child);
-			component.setLayoutData(child.getLayoutData());
-			insert(component, beforeIndex);
+		// TODO determine the preferred size
+		ComponentWrapper wrapper = new GxtComponentWrapper(child, containerWrapper, 200, 25);
+		widgetMap.put(child, wrapper);
+
+		Object layoutData = child.getLayoutData();
+		CC cc = null;
+		if (layoutData instanceof String) {
+			cc = ConstraintParser.parseComponentConstraint(ConstraintParser.prepare((String) layoutData));
+		} else if (layoutData instanceof CC) {
+			cc = (CC) layoutData;
 		}
+		if (cc != null) {
+			ccMap.put(wrapper, cc);
+		}
+
+		child.getElement().getStyle().setPosition(Position.ABSOLUTE);
+		super.insert(child, beforeIndex);
 	}
 
 	@Override
 	public boolean remove(Widget child) {
-		ccMap.remove(new GxtComponentWrapper((Component) child));
+		ComponentWrapper wrapper = widgetMap.get(child);
+		if (wrapper != null) {
+			ccMap.remove(wrapper);
+		}
 		return super.remove(child);
 	}
 
 	@UiChild(tagname = "child")
-	public void add(IsWidget child, String layoutData) {
-		child.asWidget().setLayoutData(ConstraintParser.parseComponentConstraint(layoutData));
+	public void add(IsWidget child, Object layoutData) {
+		child.asWidget().setLayoutData(layoutData);
 		add(child);
 	}
 
-	public void insert(IsWidget child, int beforeIndex, String layoutData) {
-		child.asWidget().setLayoutData(ConstraintParser.parseComponentConstraint(layoutData));
+	public void insert(IsWidget child, int beforeIndex, Object layoutData) {
+		child.asWidget().setLayoutData(layoutData);
 		insert(child, beforeIndex);
 	}
 
 	@Override
 	protected void doLayout() {
-		new Grid(new GxtContainerWrapper(this), layoutConstraints, rowConstraints, colConstraints, ccMap, layoutCallbacks).layout(new int[] { 0, 0,
-				getOffsetWidth(true), getOffsetHeight(true) }, null, null, false, false);
+		new Grid(new GxtContainerWrapper(this), layoutConstraints, rowConstraints, colConstraints, ccMap, layoutCallbacks).layout(new int[] {
+				getElement().getFrameWidth(Side.LEFT), getElement().getFrameWidth(Side.TOP), getOffsetWidth(true), getOffsetHeight(true) }, null, null, false,
+				false);
+	}
+
+	void applyLayout(Widget widget, int x, int y, int width, int height) {
+		applyLayout(widget, new Rectangle(x, y, width, height));
+	}
+
+	ComponentWrapper[] getComponents() {
+		ComponentWrapper[] components = new ComponentWrapper[getWidgetCount()];
+		for (int i = 0; i < getWidgetCount(); i++) {
+			components[i] = widgetMap.get(getWidget(i));
+		}
+		return components;
 	}
 
 }

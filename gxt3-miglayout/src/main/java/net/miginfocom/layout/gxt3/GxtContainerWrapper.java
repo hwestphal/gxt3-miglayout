@@ -30,25 +30,20 @@ package net.miginfocom.layout.gxt3;
 import net.miginfocom.layout.ComponentWrapper;
 import net.miginfocom.layout.ContainerWrapper;
 
-import com.sencha.gxt.widget.core.client.Component;
-import com.sencha.gxt.widget.core.client.container.Container;
+import com.google.gwt.user.client.ui.Widget;
 
 class GxtContainerWrapper extends GxtComponentWrapper implements ContainerWrapper {
 
-	private final Container container;
+	private final MigLayoutContainer container;
 
-	GxtContainerWrapper(Container container) {
+	GxtContainerWrapper(MigLayoutContainer container) {
 		super(container);
 		this.container = container;
 	}
 
 	@Override
 	public ComponentWrapper[] getComponents() {
-		ComponentWrapper[] components = new ComponentWrapper[getComponentCount()];
-		for (int i = 0; i < components.length; i++) {
-			components[i] = new GxtComponentWrapper((Component) container.getWidget(i));
-		}
-		return components;
+		return container.getComponents();
 	}
 
 	@Override
@@ -72,9 +67,8 @@ class GxtContainerWrapper extends GxtComponentWrapper implements ContainerWrappe
 		// TODO support debug mode
 	}
 
-	@Override
-	public int getComponetType(boolean disregardScrollPane) {
-		return TYPE_CONTAINER;
+	void applyLayout(Widget widget, int x, int y, int width, int height) {
+		container.applyLayout(widget, x, y, width, height);
 	}
 
 }

@@ -34,51 +34,59 @@ import net.miginfocom.layout.PlatformDefaults;
 
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.sencha.gxt.core.client.util.Size;
-import com.sencha.gxt.widget.core.client.Component;
 import com.sencha.gxt.widget.core.client.container.Container;
 
 class GxtComponentWrapper implements ComponentWrapper {
 
-	private final Component component;
+	private final Widget widget;
+	private final GxtContainerWrapper container;
+	private final int preferredWidth;
+	private final int preferredHeight;
 
-	GxtComponentWrapper(Component component) {
-		this.component = component;
+	GxtComponentWrapper(Widget widget, GxtContainerWrapper container, int preferredWidth, int preferredHeight) {
+		this.widget = widget;
+		this.container = container;
+		this.preferredWidth = preferredWidth;
+		this.preferredHeight = preferredHeight;
+	}
+
+	GxtComponentWrapper(Widget widget) {
+		this(widget, null, 1, 1);
 	}
 
 	@Override
 	public Object getComponent() {
-		return component;
+		return widget;
 	}
 
 	@Override
 	public int getX() {
-		return component.getElement().getLeft();
+		return widget.getElement().getOffsetLeft();
 	}
 
 	@Override
 	public int getY() {
-		return component.getElement().getTop();
+		return widget.getElement().getOffsetTop();
 	}
 
 	@Override
 	public int getWidth() {
-		return component.getOffsetWidth();
+		return widget.getOffsetWidth();
 	}
 
 	@Override
 	public int getHeight() {
-		return component.getOffsetHeight();
+		return widget.getOffsetHeight();
 	}
 
 	@Override
 	public int getScreenLocationX() {
-		return component.getAbsoluteLeft();
+		return widget.getAbsoluteLeft();
 	}
 
 	@Override
 	public int getScreenLocationY() {
-		return component.getAbsoluteTop();
+		return widget.getAbsoluteTop();
 	}
 
 	@Override
@@ -93,12 +101,12 @@ class GxtComponentWrapper implements ComponentWrapper {
 
 	@Override
 	public int getPreferredWidth(int hHint) {
-		return component.getElement().getComputedWidth();
+		return preferredWidth;
 	}
 
 	@Override
 	public int getPreferredHeight(int wHint) {
-		return component.getElement().getComputedHeight();
+		return preferredHeight;
 	}
 
 	@Override
@@ -113,12 +121,14 @@ class GxtComponentWrapper implements ComponentWrapper {
 
 	@Override
 	public void setBounds(int x, int y, int width, int height) {
-		component.setBounds(x, y, width, height);
+		if (container != null) {
+			container.applyLayout(widget, x, y, width, height);
+		}
 	}
 
 	@Override
 	public boolean isVisible() {
-		return component.isVisible();
+		return widget.isVisible();
 	}
 
 	@Override
@@ -133,11 +143,7 @@ class GxtComponentWrapper implements ComponentWrapper {
 
 	@Override
 	public ContainerWrapper getParent() {
-		Widget parent = component.getParent();
-		if (parent instanceof Container) {
-			return new GxtContainerWrapper((Container) parent);
-		}
-		return null;
+		return container;
 	}
 
 	@Override
@@ -169,24 +175,14 @@ class GxtComponentWrapper implements ComponentWrapper {
 
 	@Override
 	public String getLinkId() {
-		return component.getElement().getId();
+		return widget.getElement().getId();
 	}
 
 	@Override
 	public int getLayoutHashCode() {
-		StringBuilder code = new StringBuilder();
-		Size size = component.getElement().getStyleSize();
-		code.append(size.getWidth());
-		code.append(':');
-		code.append(size.getHeight());
-		code.append(':');
-		code.append(component.isVisible());
 		String id = getLinkId();
-		if (id != null) {
-			code.append(':');
-			code.append(id);
-		}
-		return code.toString().hashCode();
+		int idHash = id == null ? 0 : id.hashCode();
+		return (widget.isVisible() ? 1 : 0) + 2 * idHash;
 	}
 
 	@Override
@@ -201,26 +197,10 @@ class GxtComponentWrapper implements ComponentWrapper {
 
 	@Override
 	public int getComponetType(boolean disregardScrollPane) {
-		if (component instanceof Container) {
+		if (widget instanceof Container) {
 			return TYPE_CONTAINER;
 		}
 		return TYPE_UNKNOWN;
-	}
-
-	public int hashCode() {
-		return component.hashCode();
-	}
-
-	public boolean equals(Object obj) {
-		if (obj instanceof GxtComponentWrapper) {
-			return component.equals(((GxtComponentWrapper) obj).getComponent());
-		}
-		return false;
-	}
-
-	@Override
-	public String toString() {
-		return component.toString();
 	}
 
 }
