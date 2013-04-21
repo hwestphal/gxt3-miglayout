@@ -148,6 +148,7 @@ class GxtComponentWrapper implements ComponentWrapper {
 
 	@Override
 	public float getPixelUnitFactor(boolean isHor) {
+		// TODO determine pixel unit factor
 		return 1.0f;
 	}
 
