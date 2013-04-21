@@ -51,7 +51,7 @@ class GxtComponentWrapper implements ComponentWrapper {
 	}
 
 	GxtComponentWrapper(Widget widget) {
-		this(widget, null, 1, 1);
+		this(widget, null, -1, -1);
 	}
 
 	@Override

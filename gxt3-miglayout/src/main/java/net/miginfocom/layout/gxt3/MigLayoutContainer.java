@@ -77,6 +77,8 @@ public class MigLayoutContainer extends InsertResizeContainer {
 	private final AC colConstraints;
 	private final AC rowConstraints;
 
+	private Grid grid;
+
 	public MigLayoutContainer() {
 		this("");
 	}
@@ -121,15 +123,6 @@ public class MigLayoutContainer extends InsertResizeContainer {
 		layoutCallbacks.remove(callback);
 	}
 
-	@Override
-	public boolean remove(Widget child) {
-		ComponentWrapper wrapper = widgetMap.get(child);
-		if (wrapper != null) {
-			ccMap.remove(wrapper);
-		}
-		return super.remove(child);
-	}
-
 	@UiChild(tagname = "child")
 	public void add(IsWidget child, Object layoutData) {
 		child.asWidget().setLayoutData(layoutData);
@@ -143,17 +136,25 @@ public class MigLayoutContainer extends InsertResizeContainer {
 
 	@Override
 	protected void doLayout() {
-		new Grid(new GxtContainerWrapper(this), layoutConstraints, rowConstraints, colConstraints, ccMap, layoutCallbacks).layout(new int[] {
-				getElement().getFrameWidth(Side.LEFT), getElement().getFrameWidth(Side.TOP), getOffsetWidth(true), getOffsetHeight(true) }, null, null, false,
-				false);
+		if (grid == null) {
+			for (int i = 0; i < getWidgetCount(); i++) {
+				Widget widget = getWidget(i);
+				if (!widgetMap.containsKey(widget)) {
+					wrapWidget(widget);
+				}
+			}
+			grid = new Grid(containerWrapper, layoutConstraints, rowConstraints, colConstraints, ccMap, layoutCallbacks);
+		}
+		grid.layout(new int[] { getElement().getFrameWidth(Side.LEFT), getElement().getFrameWidth(Side.TOP), getOffsetWidth(true), getOffsetHeight(true) },
+				null, null, false, false);
 	}
 
-	@Override
-	protected void onInsert(int index, Widget child) {
-		ComponentWrapper wrapper = new GxtComponentWrapper(child, containerWrapper, 200, 25);
-		widgetMap.put(child, wrapper);
+	private void wrapWidget(Widget widget) {
+		// TODO determine widget's preferred size
+		ComponentWrapper wrapper = new GxtComponentWrapper(widget, containerWrapper, 200, 25);
+		widgetMap.put(widget, wrapper);
 
-		Object layoutData = child.getLayoutData();
+		Object layoutData = widget.getLayoutData();
 		CC cc = null;
 		if (layoutData instanceof String) {
 			cc = ConstraintParser.parseComponentConstraint(ConstraintParser.prepare((String) layoutData));
@@ -164,7 +165,21 @@ public class MigLayoutContainer extends InsertResizeContainer {
 			ccMap.put(wrapper, cc);
 		}
 
-		child.getElement().getStyle().setPosition(Position.ABSOLUTE);
+		widget.getElement().getStyle().setPosition(Position.ABSOLUTE);
+	}
+
+	@Override
+	protected void onInsert(int index, Widget child) {
+		grid = null;
+	}
+
+	@Override
+	protected void onRemove(Widget child) {
+		ComponentWrapper wrapper = widgetMap.get(child);
+		if (wrapper != null) {
+			ccMap.remove(wrapper);
+		}
+		grid = null;
 	}
 
 	void applyLayout(Widget widget, int x, int y, int width, int height) {
