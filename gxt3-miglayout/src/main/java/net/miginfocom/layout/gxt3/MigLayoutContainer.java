@@ -39,6 +39,7 @@ import net.miginfocom.layout.Grid;
 import net.miginfocom.layout.LC;
 import net.miginfocom.layout.LayoutCallback;
 
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.uibinder.client.UiChild;
 import com.google.gwt.user.client.DOM;
@@ -56,13 +57,13 @@ import com.sencha.gxt.widget.core.client.container.InsertResizeContainer;
  * 
  * <pre>
  * MigLayoutContainer container = new MigLayoutContainer();
- * container.add(new Label(&quot;First Name&quot;));
+ * container.add(new Label(&quot;First Name&quot;, false));
  * container.add(new TextField());
  * container.add(new Label(&quot;Surname&quot;), &quot;gap unrelated&quot;);
  * container.add(new TextField(), &quot;wrap&quot;);
  * container.add(new Label(&quot;Address&quot;));
  * container.add(new TextField(), &quot;span, grow&quot;);
- * RootPanel.get().add(container);
+ * RootLayoutPanel.get().add(container);
  * </pre>
  * 
  * @see <a href="http://www.miglayout.com/">http://www.miglayout.com/</a>
@@ -78,6 +79,7 @@ public class MigLayoutContainer extends InsertResizeContainer {
 	private final AC rowConstraints;
 
 	private Grid grid;
+	private boolean secondPass;
 
 	public MigLayoutContainer() {
 		this("");
@@ -137,21 +139,27 @@ public class MigLayoutContainer extends InsertResizeContainer {
 	@Override
 	protected void doLayout() {
 		if (grid == null) {
-			for (int i = 0; i < getWidgetCount(); i++) {
-				Widget widget = getWidget(i);
-				if (!widgetMap.containsKey(widget)) {
-					wrapWidget(widget);
+			if (secondPass) {
+				for (int i = 0; i < getWidgetCount(); i++) {
+					Widget widget = getWidget(i);
+					if (!widgetMap.containsKey(widget)) {
+						wrapWidget(widget);
+					}
 				}
+				secondPass = false;
+				grid = new Grid(containerWrapper, layoutConstraints, rowConstraints, colConstraints, ccMap, layoutCallbacks);
+			} else {
+				secondPass = true;
+				Scheduler.get().scheduleDeferred(layoutCommand);
+				return;
 			}
-			grid = new Grid(containerWrapper, layoutConstraints, rowConstraints, colConstraints, ccMap, layoutCallbacks);
 		}
 		grid.layout(new int[] { getElement().getFrameWidth(Side.LEFT), getElement().getFrameWidth(Side.TOP), getOffsetWidth(true), getOffsetHeight(true) },
 				null, null, false, false);
 	}
 
 	private void wrapWidget(Widget widget) {
-		// TODO determine widget's preferred size
-		ComponentWrapper wrapper = new GxtComponentWrapper(widget, containerWrapper, 200, 25);
+		ComponentWrapper wrapper = new GxtComponentWrapper(widget, containerWrapper, widget.getOffsetWidth(), widget.getOffsetHeight());
 		widgetMap.put(widget, wrapper);
 
 		Object layoutData = widget.getLayoutData();
@@ -164,12 +172,11 @@ public class MigLayoutContainer extends InsertResizeContainer {
 		if (cc != null) {
 			ccMap.put(wrapper, cc);
 		}
-
-		widget.getElement().getStyle().setPosition(Position.ABSOLUTE);
 	}
 
 	@Override
 	protected void onInsert(int index, Widget child) {
+		child.getElement().getStyle().setPosition(Position.ABSOLUTE);
 		grid = null;
 	}
 
