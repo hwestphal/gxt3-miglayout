@@ -2,6 +2,7 @@ package com.github.hwestphal.gxt3.miglayout;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
@@ -10,10 +11,13 @@ import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.widget.core.client.ContentPanel;
 import com.sencha.gxt.widget.core.client.TabItemConfig;
 import com.sencha.gxt.widget.core.client.TabPanel;
+import com.sencha.gxt.widget.core.client.button.ToolButton;
 import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer.BorderLayoutData;
 import com.sencha.gxt.widget.core.client.container.FlowLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
+import com.sencha.gxt.widget.core.client.event.SelectEvent;
+import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 
 public class ExampleBrowser implements IsWidget {
 
@@ -23,6 +27,7 @@ public class ExampleBrowser implements IsWidget {
 	private VerticalLayoutContainer listBox;
 	private TabPanel tabPanel;
 	private Label descriptionArea;
+	private ToolButton downloadButton;
 
 	public ExampleBrowser() {
 		container = new BorderLayoutContainer();
@@ -51,7 +56,21 @@ public class ExampleBrowser implements IsWidget {
 		container.setScrollMode(ScrollMode.AUTO);
 		container.add(descriptionArea);
 		contentPanel.add(container);
+		contentPanel.addTool(createDownloadButton());
 		return contentPanel;
+	}
+
+	private Widget createDownloadButton() {
+		downloadButton = new ToolButton(ToolButton.GEAR);
+		downloadButton.setToolTip("Open source code");
+		downloadButton.addSelectHandler(new SelectHandler() {
+			@Override
+			public void onSelect(SelectEvent event) {
+				Window.open(SOURCE_URL + "com/github/hwestphal/gxt3/miglayout/example01/Example01Content.java", "_blank", "");
+			}
+		});
+		downloadButton.setVisible(false);
+		return downloadButton;
 	}
 
 	private IsWidget createTabPanel() {
@@ -102,6 +121,7 @@ public class ExampleBrowser implements IsWidget {
 	}
 
 	private void showExample(ExampleItem example) {
+		downloadButton.setVisible(true);
 		descriptionArea.setText(example.getDescription());
 		while (tabPanel.getWidgetCount() > 0) {
 			tabPanel.remove(0);
