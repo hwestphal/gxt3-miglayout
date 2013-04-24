@@ -17,6 +17,8 @@ import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 
 public class ExampleBrowser implements IsWidget {
 
+	private static final String SOURCE_URL = "https://raw.github.com/hwestphal/gxt3-miglayout/master/gxt3-miglayout-example/src/main/java/";
+
 	private final BorderLayoutContainer container;
 	private VerticalLayoutContainer listBox;
 	private TabPanel tabPanel;
