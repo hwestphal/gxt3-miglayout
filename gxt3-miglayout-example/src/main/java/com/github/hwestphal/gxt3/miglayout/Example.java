@@ -1,26 +1,16 @@
 package com.github.hwestphal.gxt3.miglayout;
 
-import net.miginfocom.layout.gxt3.MigLayoutContainer;
-
+import com.github.hwestphal.gxt3.miglayout.example01.Example01;
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
-import com.sencha.gxt.widget.core.client.form.TextField;
 
 public class Example implements EntryPoint {
 
 	@Override
 	public void onModuleLoad() {
-		MigLayoutContainer container = new MigLayoutContainer();
-
-		container.add(new Label("First Name", false));
-		container.add(new TextField());
-		container.add(new Label("Surname"), "gap unrelated");
-		container.add(new TextField(), "wrap");
-		container.add(new Label("Address"));
-		container.add(new TextField(), "span, grow");
-
-		RootLayoutPanel.get().add(container);
+		ExampleBrowser exampleBrowser = new ExampleBrowser();
+		exampleBrowser.addExample(new Example01());
+		RootLayoutPanel.get().add(exampleBrowser);
 	}
 
 }
