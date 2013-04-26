@@ -52,6 +52,7 @@ public class ExampleBrowser implements IsWidget {
 		layoutData.setCollapseMini(true);
 		contentPanel.setLayoutData(layoutData);
 		descriptionArea = new Label();
+		descriptionArea.setLayoutData(new MarginData(5));
 		FlowLayoutContainer container = new FlowLayoutContainer();
 		container.setScrollMode(ScrollMode.AUTO);
 		container.add(descriptionArea);

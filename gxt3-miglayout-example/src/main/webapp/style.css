@@ -1,0 +1,8 @@
+* {
+	font-family: sans-serif;
+}
+
+.selectedExample {
+	font-weight: bold;
+	color: red;
+}
