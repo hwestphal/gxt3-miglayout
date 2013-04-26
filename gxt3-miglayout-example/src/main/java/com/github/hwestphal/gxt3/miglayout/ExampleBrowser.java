@@ -1,5 +1,8 @@
 package com.github.hwestphal.gxt3.miglayout;
 
+import java.util.IdentityHashMap;
+import java.util.Map;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
@@ -21,19 +24,20 @@ import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 
 public class ExampleBrowser implements IsWidget {
 
-	private static final String SOURCE_URL = "https://raw.github.com/hwestphal/gxt3-miglayout/master/gxt3-miglayout-example/src/main/java/";
+	private static final String SOURCE_BASE_URL = "https://raw.github.com/hwestphal/gxt3-miglayout/master/gxt3-miglayout-example/src/main/java/";
 	private static final String SELECTED_EXAMPLE_STYLE = "selected-example";
 
-	private final BorderLayoutContainer container;
-	private FlowLayoutContainer listBox;
+	private final Map<Widget, String> exampleSources = new IdentityHashMap<Widget, String>();
+	private final BorderLayoutContainer rootContainer;
+	private FlowLayoutContainer exampleBrowser;
 	private TabPanel tabPanel;
 	private Label descriptionArea;
 	private ToolButton downloadButton;
 
 	public ExampleBrowser() {
-		container = new BorderLayoutContainer();
-		container.setWestWidget(createBrowserPanel());
-		container.setCenterWidget(createCenterPanel());
+		rootContainer = new BorderLayoutContainer();
+		rootContainer.setWestWidget(createBrowserPanel());
+		rootContainer.setCenterWidget(createCenterPanel());
 	}
 
 	private IsWidget createCenterPanel() {
@@ -68,7 +72,8 @@ public class ExampleBrowser implements IsWidget {
 		downloadButton.addSelectHandler(new SelectHandler() {
 			@Override
 			public void onSelect(SelectEvent event) {
-				Window.open(SOURCE_URL + "com/github/hwestphal/gxt3/miglayout/example01/Example01Content.java", "_blank", "");
+				String path = exampleSources.get(tabPanel.getActiveWidget());
+				Window.open(SOURCE_BASE_URL + path, "_blank", "");
 			}
 		});
 		downloadButton.setVisible(false);
@@ -92,15 +97,15 @@ public class ExampleBrowser implements IsWidget {
 		layoutData.setSplit(true);
 		layoutData.setCollapseMini(true);
 		contentPanel.setLayoutData(layoutData);
-		listBox = new FlowLayoutContainer();
-		listBox.setScrollMode(ScrollMode.AUTO);
-		contentPanel.add(listBox);
+		exampleBrowser = new FlowLayoutContainer();
+		exampleBrowser.setScrollMode(ScrollMode.AUTO);
+		contentPanel.add(exampleBrowser);
 		return contentPanel;
 	}
 
 	@Override
 	public Widget asWidget() {
-		return container;
+		return rootContainer;
 	}
 
 	public void addExample(final ExampleItem example) {
@@ -113,12 +118,12 @@ public class ExampleBrowser implements IsWidget {
 				showExample(example);
 			}
 		});
-		listBox.add(label);
+		exampleBrowser.add(label);
 	}
 
 	private void markExample(Widget label) {
-		for (int i = 0; i < listBox.getWidgetCount(); i++) {
-			listBox.getWidget(i).setStyleName(SELECTED_EXAMPLE_STYLE, false);
+		for (int i = 0; i < exampleBrowser.getWidgetCount(); i++) {
+			exampleBrowser.getWidget(i).setStyleName(SELECTED_EXAMPLE_STYLE, false);
 		}
 		label.setStyleName(SELECTED_EXAMPLE_STYLE, true);
 	}
@@ -129,8 +134,10 @@ public class ExampleBrowser implements IsWidget {
 		while (tabPanel.getWidgetCount() > 0) {
 			tabPanel.remove(0);
 		}
+		exampleSources.clear();
 		for (ExampleTab exampleTab : example.getExampleTabs()) {
 			tabPanel.add(exampleTab, new TabItemConfig(exampleTab.getTitle(), false));
+			exampleSources.put(exampleTab.asWidget(), exampleTab.getSourcePath());
 		}
 	}
 
