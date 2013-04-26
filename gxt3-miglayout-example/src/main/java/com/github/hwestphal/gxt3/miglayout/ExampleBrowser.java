@@ -22,6 +22,7 @@ import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 public class ExampleBrowser implements IsWidget {
 
 	private static final String SOURCE_URL = "https://raw.github.com/hwestphal/gxt3-miglayout/master/gxt3-miglayout-example/src/main/java/";
+	private static final String SELECTED_EXAMPLE_STYLE = "selected-example";
 
 	private final BorderLayoutContainer container;
 	private FlowLayoutContainer listBox;
@@ -117,9 +118,9 @@ public class ExampleBrowser implements IsWidget {
 
 	private void markExample(Widget label) {
 		for (int i = 0; i < listBox.getWidgetCount(); i++) {
-			listBox.getWidget(i).setStyleName("selectedExample", false);
+			listBox.getWidget(i).setStyleName(SELECTED_EXAMPLE_STYLE, false);
 		}
-		label.setStyleName("selectedExample", true);
+		label.setStyleName(SELECTED_EXAMPLE_STYLE, true);
 	}
 
 	private void showExample(ExampleItem example) {

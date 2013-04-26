@@ -1,8 +1,8 @@
-* {
+.gwt-Label {
 	font-family: sans-serif;
 }
 
-.selectedExample {
+.selected-example {
 	font-weight: bold;
 	color: red;
 }
