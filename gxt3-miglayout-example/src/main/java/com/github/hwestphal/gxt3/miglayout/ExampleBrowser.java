@@ -15,7 +15,7 @@ import com.sencha.gxt.widget.core.client.button.ToolButton;
 import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer.BorderLayoutData;
 import com.sencha.gxt.widget.core.client.container.FlowLayoutContainer;
-import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
+import com.sencha.gxt.widget.core.client.container.MarginData;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 
@@ -24,7 +24,7 @@ public class ExampleBrowser implements IsWidget {
 	private static final String SOURCE_URL = "https://raw.github.com/hwestphal/gxt3-miglayout/master/gxt3-miglayout-example/src/main/java/";
 
 	private final BorderLayoutContainer container;
-	private VerticalLayoutContainer listBox;
+	private FlowLayoutContainer listBox;
 	private TabPanel tabPanel;
 	private Label descriptionArea;
 	private ToolButton downloadButton;
@@ -90,7 +90,7 @@ public class ExampleBrowser implements IsWidget {
 		layoutData.setSplit(true);
 		layoutData.setCollapseMini(true);
 		contentPanel.setLayoutData(layoutData);
-		listBox = new VerticalLayoutContainer();
+		listBox = new FlowLayoutContainer();
 		listBox.setScrollMode(ScrollMode.AUTO);
 		contentPanel.add(listBox);
 		return contentPanel;
@@ -103,6 +103,7 @@ public class ExampleBrowser implements IsWidget {
 
 	public void addExample(final ExampleItem example) {
 		final Label label = new Label(example.getTitle(), false);
+		label.setLayoutData(new MarginData(5));
 		label.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
