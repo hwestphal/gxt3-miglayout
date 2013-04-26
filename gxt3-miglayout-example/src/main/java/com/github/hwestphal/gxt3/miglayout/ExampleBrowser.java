@@ -3,8 +3,11 @@ package com.github.hwestphal.gxt3.miglayout;
 import java.util.IdentityHashMap;
 import java.util.Map;
 
+import com.google.gwt.dom.client.Style.Cursor;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
@@ -111,6 +114,12 @@ public class ExampleBrowser implements IsWidget {
 	public void addExample(final ExampleItem example) {
 		final Label label = new Label(example.getTitle(), false);
 		label.setLayoutData(new MarginData(5));
+		label.addMouseOverHandler(new MouseOverHandler() {
+			@Override
+			public void onMouseOver(MouseOverEvent event) {
+				label.getElement().getStyle().setCursor(Cursor.POINTER);
+			}
+		});
 		label.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
