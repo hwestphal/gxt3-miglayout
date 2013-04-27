@@ -35,8 +35,7 @@ package com.github.hwestphal.gxt3.miglayout.example02;
 
 import net.miginfocom.layout.gxt3.MigLayoutContainer;
 
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Element;
+import com.github.hwestphal.gxt3.miglayout.widget.Separator;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
@@ -93,14 +92,7 @@ public class Example02_Plain_Content implements IsWidget {
 		Label label = new Label(text, false);
 		label.getElement().getStyle().setColor("blue");
 		container.add(label, "gapbottom 1, span, split 2, aligny center");
-		Widget separator = new Widget() {
-			{
-				Element div = DOM.createDiv();
-				div.appendChild(DOM.createElement("hr"));
-				setElement(div);
-			}
-		};
-		container.add(separator, "gapleft rel, growx");
+		container.add(new Separator(), "gapleft rel, growx");
 	}
 
 	@Override
