@@ -36,10 +36,11 @@ public class Separator extends Widget {
 	public static final String SEPARATOR_STYLE_NAME = "gwt-Separator";
 
 	public Separator() {
+		Element hr = DOM.createElement("hr");
+		hr.setClassName(SEPARATOR_STYLE_NAME);
 		Element div = DOM.createDiv();
-		div.appendChild(DOM.createElement("hr"));
+		div.appendChild(hr);
 		setElement(div);
-		setStyleName(SEPARATOR_STYLE_NAME);
 	}
 
 }

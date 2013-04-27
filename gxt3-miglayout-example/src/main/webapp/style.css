@@ -3,6 +3,12 @@
 	font-size: small;
 }
 
+.gwt-Separator {
+	border: none;
+	height: 1px;
+	background-color: black;
+}
+
 .selected-example {
 	font-weight: bold;
 	color: red;
