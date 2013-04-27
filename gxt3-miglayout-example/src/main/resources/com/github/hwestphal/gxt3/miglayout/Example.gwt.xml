@@ -7,4 +7,6 @@
 	<entry-point class='com.github.hwestphal.gxt3.miglayout.Example' />
 	
 	<source path='' />
+	
+	<collapse-all-properties />
 </module>
