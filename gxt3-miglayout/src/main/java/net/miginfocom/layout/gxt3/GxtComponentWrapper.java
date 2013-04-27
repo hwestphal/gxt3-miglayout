@@ -32,8 +32,8 @@ import net.miginfocom.layout.ContainerWrapper;
 import net.miginfocom.layout.LayoutUtil;
 import net.miginfocom.layout.PlatformDefaults;
 
-import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.sencha.gxt.core.client.dom.XDOM;
 import com.sencha.gxt.widget.core.client.container.Container;
 
 class GxtComponentWrapper implements ComponentWrapper {
@@ -166,12 +166,12 @@ class GxtComponentWrapper implements ComponentWrapper {
 
 	@Override
 	public int getScreenWidth() {
-		return RootPanel.getBodyElement().getClientWidth();
+		return XDOM.getViewportWidth();
 	}
 
 	@Override
 	public int getScreenHeight() {
-		return RootPanel.getBodyElement().getClientHeight();
+		return XDOM.getViewportHeight();
 	}
 
 	@Override
