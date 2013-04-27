@@ -57,14 +57,14 @@ public class Example02_Plain_Content implements IsWidget {
 		container.add(new TextField(), "span, growx");
 		container.add(new Label("Contact"), "skip");
 		container.add(new TextField(), "span, growx");
-		container.add(new Label("Order No"), "skip");
+		container.add(new Label("Order No", false), "skip");
 		container.add(new TextField(), "wrap para");
 
 		addSeparator("Inspector");
 
 		container.add(new Label("Name"), "skip");
 		container.add(new TextField(), "span, growx");
-		container.add(new Label("Reference No"), "skip");
+		container.add(new Label("Reference No", false), "skip");
 		container.add(new TextField(), "wrap");
 		container.add(new Label("Status"), "skip");
 		container.add(createCombo("In Progress", "Finished", "Released"), "wrap para");
@@ -73,11 +73,11 @@ public class Example02_Plain_Content implements IsWidget {
 
 		container.add(new Label("Shipyard"), "skip");
 		container.add(new TextField(), "span, growx");
-		container.add(new Label("Register No"), "skip");
+		container.add(new Label("Register No", false), "skip");
 		container.add(new TextField());
-		container.add(new Label("Hull No"), "right");
+		container.add(new Label("Hull No", false), "right");
 		container.add(new TextField(), "wrap");
-		container.add(new Label("Project Structure Type"), "skip");
+		container.add(new Label("Project Structure Type", false), "skip");
 		container.add(createCombo("New Building", "Convention", "Repair"));
 	}
 
