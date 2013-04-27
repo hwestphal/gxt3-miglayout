@@ -39,8 +39,9 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
+import com.sencha.gxt.data.shared.StringLabelProvider;
+import com.sencha.gxt.widget.core.client.form.SimpleComboBox;
 import com.sencha.gxt.widget.core.client.form.TextField;
 
 public class Example02_Plain_Content implements IsWidget {
@@ -66,7 +67,7 @@ public class Example02_Plain_Content implements IsWidget {
 		container.add(new Label("Reference No"), "skip");
 		container.add(new TextField(), "wrap");
 		container.add(new Label("Status"), "skip");
-		container.add(createCombo("In Progress", "Finnished", "Released"), "wrap para");
+		container.add(createCombo("In Progress", "Finished", "Released"), "wrap para");
 
 		addSeparator("Ship");
 
@@ -76,14 +77,14 @@ public class Example02_Plain_Content implements IsWidget {
 		container.add(new TextField());
 		container.add(new Label("Hull No"), "right");
 		container.add(new TextField(), "wrap");
-		container.add(new Label("Project StructureType"), "skip");
+		container.add(new Label("Project Structure Type"), "skip");
 		container.add(createCombo("New Building", "Convention", "Repair"));
 	}
 
 	private IsWidget createCombo(String... items) {
-		ListBox comboBox = new ListBox();
+		SimpleComboBox<String> comboBox = new SimpleComboBox<String>(new StringLabelProvider<String>());
 		for (String item : items) {
-			comboBox.addItem(item);
+			comboBox.add(item);
 		}
 		return comboBox;
 	}
