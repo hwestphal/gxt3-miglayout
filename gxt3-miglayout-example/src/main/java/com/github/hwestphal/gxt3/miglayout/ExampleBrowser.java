@@ -37,6 +37,7 @@ import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Frame;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
@@ -63,7 +64,7 @@ public class ExampleBrowser implements IsWidget {
 	private final BorderLayoutContainer rootContainer;
 	private FlowLayoutContainer exampleBrowser;
 	private TabPanel tabPanel;
-	private Label descriptionArea;
+	private HTML descriptionArea;
 	private ToolButton downloadButton;
 
 	public ExampleBrowser() {
@@ -88,7 +89,9 @@ public class ExampleBrowser implements IsWidget {
 		layoutData.setSplit(true);
 		layoutData.setCollapseMini(true);
 		contentPanel.setLayoutData(layoutData);
-		descriptionArea = new Label();
+		descriptionArea = new HTML();
+		descriptionArea
+				.setHTML("MigLayout and MigLayout examples \u00A9 Mikael Grev, MiG InfoCom AB<br /><br />MigLayout for GXT 3 \u00A9 Harald Westphal<br /><br />MigLayout for GXT 3 uses Sencha GXT 3 which is distributed under the terms of the GPL v3 (<a href=\"http://www.sencha.com/products/gxt/license/\">http://www.sencha.com/products/gxt/license/</a>)");
 		descriptionArea.setLayoutData(new MarginData(5));
 		FlowLayoutContainer container = new FlowLayoutContainer();
 		container.setScrollMode(ScrollMode.AUTO);
