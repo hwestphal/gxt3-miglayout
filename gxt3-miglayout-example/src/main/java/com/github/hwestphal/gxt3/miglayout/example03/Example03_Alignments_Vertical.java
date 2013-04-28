@@ -33,19 +33,52 @@
  */
 package com.github.hwestphal.gxt3.miglayout.example03;
 
+import java.util.Arrays;
+import java.util.List;
+
 import net.miginfocom.layout.gxt3.MigLayoutContainer;
 
+import com.google.gwt.dom.client.Style.Overflow;
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
+import com.sencha.gxt.widget.core.client.button.TextButton;
+import com.sencha.gxt.widget.core.client.form.TextArea;
 
 public class Example03_Alignments_Vertical implements IsWidget {
 
 	private final MigLayoutContainer container;
 
 	public Example03_Alignments_Vertical() {
-		container = new MigLayoutContainer();
-		
-		// TODO implement
+		container = new MigLayoutContainer("wrap,flowy", "[]unrel[]rel[]", "[top]15[center]15[bottom]15[fill]15[fill,baseline]15[baseline]15[]");
+
+		List<String> verLabels = Arrays.asList("[top]", "[center]", "[bottom]", "[fill]", "[fill,baseline]", "[baseline]", "[] (Default)");
+		for (String verLabel : verLabels) {
+			container.add(new Label(verLabel));
+		}
+
+		List<String> verNames = Arrays.asList("One", "One<br />Two");
+		for (String verName : verNames) {
+			for (int i = 0; i < verLabels.size(); i++) {
+				TextButton button = new TextButton();
+				button.setHTML(verName);
+				container.add(button);
+			}
+		}
+
+		for (int i = 0; i < verLabels.size(); i++) {
+			TextArea textArea = new TextArea();
+			textArea.setText("Text Area\nwith two lines");
+			textArea.setPreventScrollbars(true);
+			container.add(textArea);
+		}
+
+		for (int i = 0; i < verLabels.size(); i++) {
+			TextArea textArea = new TextArea();
+			textArea.setText("Text Area\nwith three lines\nand scrolling");
+			textArea.getElement().getStyle().setOverflow(Overflow.AUTO);
+			container.add(textArea);
+		}
 	}
 
 	@Override
