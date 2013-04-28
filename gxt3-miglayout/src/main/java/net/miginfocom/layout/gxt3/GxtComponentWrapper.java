@@ -193,7 +193,7 @@ class GxtComponentWrapper implements ComponentWrapper {
 
 	@Override
 	public void paintDebugOutline() {
-		// TODO support debug mode
+		container.paintDebug(getX(), getY(), getWidth(), getHeight(), "blue");
 	}
 
 	@Override

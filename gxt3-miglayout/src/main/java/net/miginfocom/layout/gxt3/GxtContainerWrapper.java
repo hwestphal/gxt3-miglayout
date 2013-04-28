@@ -27,14 +27,25 @@
  */
 package net.miginfocom.layout.gxt3;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.miginfocom.layout.ComponentWrapper;
 import net.miginfocom.layout.ContainerWrapper;
 
+import com.google.gwt.dom.client.Style;
+import com.google.gwt.dom.client.Style.BorderStyle;
+import com.google.gwt.dom.client.Style.Position;
+import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Widget;
+import com.sencha.gxt.core.client.Style.Side;
+import com.sencha.gxt.core.client.dom.XElement;
 
 class GxtContainerWrapper extends GxtComponentWrapper implements ContainerWrapper {
 
 	private final MigLayoutContainer container;
+	private final List<XElement> debugOverlays = new ArrayList<XElement>();
 
 	GxtContainerWrapper(MigLayoutContainer container) {
 		super(container);
@@ -63,12 +74,39 @@ class GxtContainerWrapper extends GxtComponentWrapper implements ContainerWrappe
 	}
 
 	@Override
+	public void paintDebugOutline() {
+		removeDebugOverlays();
+		XElement element = container.getElement();
+		paintDebug(element.getFrameWidth(Side.LEFT), element.getFrameWidth(Side.TOP), container.getOffsetWidth(true), container.getOffsetHeight(true), "blue");
+	}
+
+	private void removeDebugOverlays() {
+		Element root = container.getElement();
+		for (Element overlay : debugOverlays) {
+			root.removeChild(overlay);
+		}
+		debugOverlays.clear();
+	}
+
+	@Override
 	public void paintDebugCell(int x, int y, int width, int height) {
-		// TODO support debug mode
+		paintDebug(x, y, width, height, "red");
 	}
 
 	void applyLayout(Widget widget, int x, int y, int width, int height) {
 		container.applyLayout(widget, x, y, width, height);
+	}
+
+	void paintDebug(int x, int y, int width, int height, String color) {
+		XElement overlay = XElement.createElement("div");
+		Style style = overlay.getStyle();
+		style.setPosition(Position.ABSOLUTE);
+		style.setBorderColor(color);
+		style.setBorderStyle(BorderStyle.DASHED);
+		style.setBorderWidth(1, Unit.PX);
+		overlay.setBounds(x + 1, y + 1, width - 2, height - 2);
+		container.getElement().appendChild(overlay);
+		debugOverlays.add(overlay);
 	}
 
 }

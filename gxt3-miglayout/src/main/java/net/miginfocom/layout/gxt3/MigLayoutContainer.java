@@ -80,6 +80,7 @@ public class MigLayoutContainer extends InsertResizeContainer {
 
 	private Grid grid;
 	private boolean secondPass;
+	private boolean debug;
 
 	public MigLayoutContainer() {
 		this("");
@@ -104,6 +105,14 @@ public class MigLayoutContainer extends InsertResizeContainer {
 	public MigLayoutContainer(String layoutConstraints, String colConstraints, String rowConstraints) {
 		this(ConstraintParser.parseLayoutConstraint(ConstraintParser.prepare(layoutConstraints)), ConstraintParser.parseColumnConstraints(ConstraintParser
 				.prepare(colConstraints)), ConstraintParser.parseRowConstraints(ConstraintParser.prepare(rowConstraints)));
+	}
+
+	public boolean isDebug() {
+		return debug;
+	}
+
+	public void setDebug(boolean debug) {
+		this.debug = debug;
 	}
 
 	public MigLayoutContainer(LC layoutConstraints, AC colConstraints, AC rowConstraints) {
@@ -155,7 +164,10 @@ public class MigLayoutContainer extends InsertResizeContainer {
 			}
 		}
 		grid.layout(new int[] { getElement().getFrameWidth(Side.LEFT), getElement().getFrameWidth(Side.TOP), getOffsetWidth(true), getOffsetHeight(true) },
-				null, null, false, false);
+				null, null, debug, false);
+		if (debug) {
+			grid.paintDebug();
+		}
 	}
 
 	private void wrapWidget(Widget widget) {
