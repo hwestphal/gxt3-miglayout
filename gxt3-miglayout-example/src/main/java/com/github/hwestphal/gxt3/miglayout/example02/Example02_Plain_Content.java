@@ -45,39 +45,43 @@ import com.sencha.gxt.widget.core.client.form.TextField;
 
 public class Example02_Plain_Content implements IsWidget {
 
-	private final MigLayoutContainer container;
+	private MigLayoutContainer container;
 
-	public Example02_Plain_Content() {
-		container = new MigLayoutContainer("ins 20", "[para]0[][100lp, fill][60lp][95lp, fill]", "");
+	@Override
+	public Widget asWidget() {
+		if (container == null) {
+			container = new MigLayoutContainer("ins 20", "[para]0[][100lp, fill][60lp][95lp, fill]", "");
 
-		addSeparator("Manufacturer");
+			addSeparator("Manufacturer");
 
-		container.add(new Label("Company"), "skip");
-		container.add(new TextField(), "span, growx");
-		container.add(new Label("Contact"), "skip");
-		container.add(new TextField(), "span, growx");
-		container.add(new Label("Order No", false), "skip");
-		container.add(new TextField(), "wrap para");
+			container.add(new Label("Company"), "skip");
+			container.add(new TextField(), "span, growx");
+			container.add(new Label("Contact"), "skip");
+			container.add(new TextField(), "span, growx");
+			container.add(new Label("Order No", false), "skip");
+			container.add(new TextField(), "wrap para");
 
-		addSeparator("Inspector");
+			addSeparator("Inspector");
 
-		container.add(new Label("Name"), "skip");
-		container.add(new TextField(), "span, growx");
-		container.add(new Label("Reference No", false), "skip");
-		container.add(new TextField(), "wrap");
-		container.add(new Label("Status"), "skip");
-		container.add(createCombo("In Progress", "Finished", "Released"), "wrap para");
+			container.add(new Label("Name"), "skip");
+			container.add(new TextField(), "span, growx");
+			container.add(new Label("Reference No", false), "skip");
+			container.add(new TextField(), "wrap");
+			container.add(new Label("Status"), "skip");
+			container.add(createCombo("In Progress", "Finished", "Released"), "wrap para");
 
-		addSeparator("Ship");
+			addSeparator("Ship");
 
-		container.add(new Label("Shipyard"), "skip");
-		container.add(new TextField(), "span, growx");
-		container.add(new Label("Register No", false), "skip");
-		container.add(new TextField());
-		container.add(new Label("Hull No", false), "right");
-		container.add(new TextField(), "wrap");
-		container.add(new Label("Project Structure Type", false), "skip");
-		container.add(createCombo("New Building", "Convention", "Repair"));
+			container.add(new Label("Shipyard"), "skip");
+			container.add(new TextField(), "span, growx");
+			container.add(new Label("Register No", false), "skip");
+			container.add(new TextField());
+			container.add(new Label("Hull No", false), "right");
+			container.add(new TextField(), "wrap");
+			container.add(new Label("Project Structure Type", false), "skip");
+			container.add(createCombo("New Building", "Convention", "Repair"));
+		}
+		return container;
 	}
 
 	private IsWidget createCombo(String... items) {
@@ -93,11 +97,6 @@ public class Example02_Plain_Content implements IsWidget {
 		label.getElement().getStyle().setColor("blue");
 		container.add(label, "gapbottom 1, span, split 2, aligny center");
 		container.add(new Separator(), "gapleft rel, growx");
-	}
-
-	@Override
-	public Widget asWidget() {
-		return container;
 	}
 
 }

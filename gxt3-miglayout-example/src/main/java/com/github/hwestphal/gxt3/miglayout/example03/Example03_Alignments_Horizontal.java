@@ -45,27 +45,26 @@ import com.sencha.gxt.widget.core.client.button.TextButton;
 
 public class Example03_Alignments_Horizontal implements IsWidget {
 
-	private final MigLayoutContainer container;
-
-	public Example03_Alignments_Horizontal() {
-		container = new MigLayoutContainer("wrap", "[label]15[left]15[center]15[right]15[fill]15[]", "[]15[]");
-
-		List<String> horLabels = Arrays.asList("[label]", "[left]", "[center]", "[right]", "[fill]", "[] (Default)");
-		for (String horLabel : horLabels) {
-			container.add(new Label(horLabel));
-		}
-
-		List<String> horNames = Arrays.asList("First Name", "Phone Number", "Facsmile", "Email", "Address", "Other");
-		for (String horName : horNames) {
-			container.add(new Label(horName, false));
-			for (int i = 1; i < horLabels.size(); i++) {
-				container.add(new TextButton(horName));
-			}
-		}
-	}
+	private MigLayoutContainer container;
 
 	@Override
 	public Widget asWidget() {
+		if (container == null) {
+			container = new MigLayoutContainer("wrap", "[label]15[left]15[center]15[right]15[fill]15[]", "[]15[]");
+
+			List<String> horLabels = Arrays.asList("[label]", "[left]", "[center]", "[right]", "[fill]", "[] (Default)");
+			for (String horLabel : horLabels) {
+				container.add(new Label(horLabel));
+			}
+
+			List<String> horNames = Arrays.asList("First Name", "Phone Number", "Facsimile", "Email", "Address", "Other");
+			for (String horName : horNames) {
+				container.add(new Label(horName, false));
+				for (int i = 1; i < horLabels.size(); i++) {
+					container.add(new TextButton(horName));
+				}
+			}
+		}
 		return container;
 	}
 

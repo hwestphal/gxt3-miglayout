@@ -45,27 +45,26 @@ import com.sencha.gxt.widget.core.client.button.TextButton;
 
 public class Example04_CellAlignments_Vertical implements IsWidget {
 
-	private final MigLayoutContainer container;
-
-	public Example04_CellAlignments_Vertical() {
-		container = new MigLayoutContainer("wrap,flowy", "[right][]", "[grow,top][grow,center][grow,bottom][grow,fill,bottom][grow,fill,baseline]");
-
-		container.add(new Label("[top]"), "aligny center");
-		container.add(new Label("[center]"), "aligny center");
-		container.add(new Label("[bottom]"), "aligny center");
-		container.add(new Label("[fill, bottom]"), "aligny center, growy 0");
-		container.add(new Label("[fill, baseline]"), "aligny center");
-
-		List<String> sizes = Arrays.asList("", "growy", "growy 0", "top", "aligny center", "bottom");
-		for (String size : sizes) {
-			for (int i = 0; i < 5; i++) {
-				container.add(new TextButton(size.isEmpty() ? "default" : size), size);
-			}
-		}
-	}
+	private MigLayoutContainer container;
 
 	@Override
 	public Widget asWidget() {
+		if (container == null) {
+			container = new MigLayoutContainer("wrap,flowy", "[right][]", "[grow,top][grow,center][grow,bottom][grow,fill,bottom][grow,fill,baseline]");
+
+			container.add(new Label("[top]"), "aligny center");
+			container.add(new Label("[center]"), "aligny center");
+			container.add(new Label("[bottom]"), "aligny center");
+			container.add(new Label("[fill, bottom]"), "aligny center, growy 0");
+			container.add(new Label("[fill, baseline]"), "aligny center");
+
+			List<String> sizes = Arrays.asList("", "growy", "growy 0", "top", "aligny center", "bottom");
+			for (String size : sizes) {
+				for (int i = 0; i < 5; i++) {
+					container.add(new TextButton(size.isEmpty() ? "default" : size), size);
+				}
+			}
+		}
 		return container;
 	}
 

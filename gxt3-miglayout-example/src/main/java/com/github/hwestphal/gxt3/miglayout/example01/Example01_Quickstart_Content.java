@@ -43,28 +43,32 @@ import com.sencha.gxt.widget.core.client.form.TextField;
 
 public class Example01_Quickstart_Content implements IsWidget {
 
-	private final MigLayoutContainer container;
+	private MigLayoutContainer container;
 
-	public Example01_Quickstart_Content() {
-		container = new MigLayoutContainer("inset 20");
+	@Override
+	public Widget asWidget() {
+		if (container == null) {
+			container = new MigLayoutContainer("inset 20");
 
-		addSeparator("General");
+			addSeparator("General");
 
-		container.add(new Label("Company"), "gap para, wmin pref");
-		container.add(new TextField(), "span, growx");
-		container.add(new Label("Contact"), "gap para, wmin pref");
-		container.add(new TextField(), "span, growx, wrap para");
+			container.add(new Label("Company"), "gap para, wmin pref");
+			container.add(new TextField(), "span, growx");
+			container.add(new Label("Contact"), "gap para, wmin pref");
+			container.add(new TextField(), "span, growx, wrap para");
 
-		addSeparator("Propeller");
+			addSeparator("Propeller");
 
-		container.add(new Label("PTI/kW"), "gap para, wmin pref");
-		container.add(new TextField());
-		container.add(new Label("Power/kW"), "gap para, wmin pref");
-		container.add(new TextField(), "wrap");
-		container.add(new Label("R/mm"), "gap para, wmin pref");
-		container.add(new TextField());
-		container.add(new Label("D/mm"), "gap para, wmin pref");
-		container.add(new TextField());
+			container.add(new Label("PTI/kW"), "gap para, wmin pref");
+			container.add(new TextField());
+			container.add(new Label("Power/kW"), "gap para, wmin pref");
+			container.add(new TextField(), "wrap");
+			container.add(new Label("R/mm"), "gap para, wmin pref");
+			container.add(new TextField());
+			container.add(new Label("D/mm"), "gap para, wmin pref");
+			container.add(new TextField());
+		}
+		return container;
 	}
 
 	private void addSeparator(String text) {
@@ -72,11 +76,6 @@ public class Example01_Quickstart_Content implements IsWidget {
 		label.getElement().getStyle().setColor("blue");
 		container.add(label, "gapbottom 1, span, split 2, aligny center");
 		container.add(new Separator(), "gapleft rel, growx");
-	}
-
-	@Override
-	public Widget asWidget() {
-		return container;
 	}
 
 }

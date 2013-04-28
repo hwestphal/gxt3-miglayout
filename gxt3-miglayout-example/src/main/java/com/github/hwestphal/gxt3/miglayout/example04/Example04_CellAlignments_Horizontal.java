@@ -45,26 +45,25 @@ import com.sencha.gxt.widget.core.client.button.TextButton;
 
 public class Example04_CellAlignments_Horizontal implements IsWidget {
 
-	private final MigLayoutContainer container;
-
-	public Example04_CellAlignments_Horizontal() {
-		container = new MigLayoutContainer("wrap", "[grow,left][grow,center][grow,right][grow,fill,center]", "[]unrel[][]");
-
-		container.add(new Label("[left]"), "c");
-		container.add(new Label("[center]"), "c");
-		container.add(new Label("[right]"), "c");
-		container.add(new Label("[fill,center]"), "c, growx 0");
-
-		List<String> sizes = Arrays.asList("", "growx", "growx 0", "left", "center", "right", "leading", "trailing");
-		for (String size : sizes) {
-			for (int i = 0; i < 4; i++) {
-				container.add(new TextButton(size.isEmpty() ? "default" : size), size);
-			}
-		}
-	}
+	private MigLayoutContainer container;
 
 	@Override
 	public Widget asWidget() {
+		if (container == null) {
+			container = new MigLayoutContainer("wrap", "[grow,left][grow,center][grow,right][grow,fill,center]", "[]unrel[][]");
+
+			container.add(new Label("[left]"), "c");
+			container.add(new Label("[center]"), "c");
+			container.add(new Label("[right]"), "c");
+			container.add(new Label("[fill,center]"), "c, growx 0");
+
+			List<String> sizes = Arrays.asList("", "growx", "growx 0", "left", "center", "right", "leading", "trailing");
+			for (String size : sizes) {
+				for (int i = 0; i < 4; i++) {
+					container.add(new TextButton(size.isEmpty() ? "default" : size), size);
+				}
+			}
+		}
 		return container;
 	}
 
