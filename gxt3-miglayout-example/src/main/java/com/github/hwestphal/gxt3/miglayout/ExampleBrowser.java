@@ -36,6 +36,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
@@ -54,6 +55,7 @@ import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 
 public class ExampleBrowser implements IsWidget {
 
+	private static final String MIGLAYOUT_URL = "http://www.miglayout.com/";
 	private static final String SOURCE_BASE_URL = "https://raw.github.com/hwestphal/gxt3-miglayout/master/gxt3-miglayout-example/src/main/java/";
 	private static final String SELECTED_EXAMPLE_STYLE = "selected-example";
 
@@ -115,6 +117,7 @@ public class ExampleBrowser implements IsWidget {
 		BorderLayoutData layoutData = new BorderLayoutData();
 		layoutData.setMargins(new Margins(0, 5, 5, 0));
 		tabPanel.setLayoutData(layoutData);
+		tabPanel.add(new Frame(MIGLAYOUT_URL), "miglayout.com");
 		return tabPanel;
 	}
 
@@ -172,7 +175,7 @@ public class ExampleBrowser implements IsWidget {
 		}
 		exampleSources.clear();
 		for (ExampleTab exampleTab : example.getExampleTabs()) {
-			tabPanel.add(exampleTab, new TabItemConfig(exampleTab.getTitle(), false));
+			tabPanel.add(exampleTab, new TabItemConfig(exampleTab.getTitle()));
 			exampleSources.put(exampleTab.asWidget(), exampleTab.getSourcePath());
 		}
 	}
