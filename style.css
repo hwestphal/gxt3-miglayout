@@ -1,5 +1,12 @@
 .gwt-Label {
 	font-family: sans-serif;
+	font-size: small;
+}
+
+.gwt-Separator {
+	border: none;
+	height: 1px;
+	background-color: black;
 }
 
 .selected-example {
