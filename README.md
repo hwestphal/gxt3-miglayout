@@ -1,6 +1,6 @@
 # [MiG Layout](http://www.miglayout.com/) Manager for [GXT 3](http://www.sencha.com/products/gxt)
 
-See http://hwestphal.github.io/gxt3-miglayout/ for demo application.
+See http://hwestphal.github.io/gxt3-miglayout/ for a demo application.
 
 MigLayout and MigLayout examples © Mikael Grev, MiG InfoCom AB
 
@@ -31,4 +31,4 @@ Add the following dependencies to your project (additionally to GWT and GXT):
         </dependency>
     </dependencies>
 
-Please see the exaple application for details.
+Please see the example application for details.
