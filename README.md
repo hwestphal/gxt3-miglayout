@@ -31,4 +31,8 @@ Add the following dependencies to your project (additionally to GWT and GXT):
         </dependency>
     </dependencies>
 
-Please see the example application for details.
+Add the following entry to your GWT module descriptor:
+
+    <inherits name='net.miginfocom.layout.MigLayout' />
+
+You can now use `net.miginfocom.layout.gxt3.MigLayoutContainer` in your application. Please see the example application for details.
