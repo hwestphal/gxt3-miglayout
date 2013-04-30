@@ -33,12 +33,12 @@ import com.google.gwt.user.client.ui.Widget;
 public class ExampleTab implements IsWidget {
 
 	private final String title;
-	private final Widget widget;
+	private final IsWidget widget;
 	private final String sourcePath;
 
 	public ExampleTab(String title, IsWidget widget) {
 		this.title = title;
-		this.widget = widget.asWidget();
+		this.widget = widget;
 		this.sourcePath = widget.getClass().getName().replace('.', '/') + ".java";
 	}
 
@@ -52,7 +52,7 @@ public class ExampleTab implements IsWidget {
 
 	@Override
 	public Widget asWidget() {
-		return widget;
+		return widget.asWidget();
 	}
 
 }
