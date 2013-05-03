@@ -194,7 +194,7 @@ public class MigLayoutContainer extends InsertResizeContainer {
 
 	@Override
 	protected void onRemove(Widget child) {
-		ComponentWrapper wrapper = widgetMap.get(child);
+		ComponentWrapper wrapper = widgetMap.remove(child);
 		if (wrapper != null) {
 			ccMap.remove(wrapper);
 		}
