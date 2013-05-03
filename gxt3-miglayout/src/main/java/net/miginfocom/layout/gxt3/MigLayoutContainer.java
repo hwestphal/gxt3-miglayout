@@ -68,7 +68,7 @@ import com.sencha.gxt.widget.core.client.container.InsertResizeContainer;
  * 
  * @see <a href="http://www.miglayout.com/">http://www.miglayout.com/</a>
  */
-public class MigLayoutContainer extends InsertResizeContainer {
+public final class MigLayoutContainer extends InsertResizeContainer {
 
 	private final ArrayList<LayoutCallback> layoutCallbacks = new ArrayList<LayoutCallback>();
 	private final Map<ComponentWrapper, CC> ccMap = new HashMap<ComponentWrapper, CC>();
