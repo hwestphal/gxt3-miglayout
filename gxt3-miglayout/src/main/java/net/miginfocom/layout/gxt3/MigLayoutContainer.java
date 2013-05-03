@@ -145,7 +145,7 @@ public final class MigLayoutContainer extends InsertResizeContainer {
 	}
 
 	@Override
-	protected void doLayout() {
+	public void doLayout() {
 		if (grid == null) {
 			if (secondPass) {
 				for (int i = 0; i < getWidgetCount(); i++) {
