@@ -134,12 +134,22 @@ public final class MigLayoutContainer extends InsertResizeContainer {
 	}
 
 	@UiChild(tagname = "child")
-	public void add(IsWidget child, Object layoutData) {
+	public void add(IsWidget child, String layoutData) {
 		child.asWidget().setLayoutData(layoutData);
 		add(child);
 	}
 
-	public void insert(IsWidget child, int beforeIndex, Object layoutData) {
+	public void add(IsWidget child, CC layoutData) {
+		child.asWidget().setLayoutData(layoutData);
+		add(child);
+	}
+
+	public void insert(IsWidget child, int beforeIndex, String layoutData) {
+		child.asWidget().setLayoutData(layoutData);
+		insert(child, beforeIndex);
+	}
+
+	public void insert(IsWidget child, int beforeIndex, CC layoutData) {
 		child.asWidget().setLayoutData(layoutData);
 		insert(child, beforeIndex);
 	}
