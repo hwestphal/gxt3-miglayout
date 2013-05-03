@@ -39,7 +39,6 @@ import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Widget;
-import com.sencha.gxt.core.client.Style.Side;
 import com.sencha.gxt.core.client.dom.XElement;
 
 class GxtContainerWrapper extends GxtComponentWrapper implements ContainerWrapper {
@@ -76,8 +75,7 @@ class GxtContainerWrapper extends GxtComponentWrapper implements ContainerWrappe
 	@Override
 	public void paintDebugOutline() {
 		removeDebugOverlays();
-		XElement element = container.getElement();
-		paintDebug(element.getFrameWidth(Side.LEFT), element.getFrameWidth(Side.TOP), container.getOffsetWidth(true), container.getOffsetHeight(true), "blue");
+		paintDebug(0, 0, container.getOffsetWidth(true), container.getOffsetHeight(true), "blue");
 	}
 
 	private void removeDebugOverlays() {

@@ -45,7 +45,6 @@ import com.google.gwt.uibinder.client.UiChild;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
-import com.sencha.gxt.core.client.Style.Side;
 import com.sencha.gxt.core.client.util.Rectangle;
 import com.sencha.gxt.widget.core.client.container.InsertResizeContainer;
 
@@ -163,8 +162,7 @@ public final class MigLayoutContainer extends InsertResizeContainer {
 				return;
 			}
 		}
-		grid.layout(new int[] { getElement().getFrameWidth(Side.LEFT), getElement().getFrameWidth(Side.TOP), getOffsetWidth(true), getOffsetHeight(true) },
-				null, null, debug, false);
+		grid.layout(new int[] { 0, 0, getOffsetWidth(true), getOffsetHeight(true) }, null, null, debug, false);
 		if (debug) {
 			grid.paintDebug();
 		}
