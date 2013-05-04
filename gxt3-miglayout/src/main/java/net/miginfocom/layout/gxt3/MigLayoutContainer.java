@@ -154,8 +154,21 @@ public final class MigLayoutContainer extends InsertResizeContainer {
 		insert(child, beforeIndex);
 	}
 
+	public void layout() {
+		layout(false);
+	}
+
+	public void layout(boolean cleanCache) {
+		if (cleanCache) {
+			widgetMap.clear();
+			ccMap.clear();
+			grid = null;
+		}
+		doLayout();
+	}
+
 	@Override
-	public void doLayout() {
+	protected void doLayout() {
 		if (grid == null) {
 			if (secondPass) {
 				for (int i = 0; i < getWidgetCount(); i++) {
