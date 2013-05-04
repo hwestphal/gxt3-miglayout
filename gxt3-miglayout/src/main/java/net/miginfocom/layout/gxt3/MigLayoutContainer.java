@@ -164,7 +164,7 @@ public final class MigLayoutContainer extends InsertResizeContainer {
 			ccMap.clear();
 			grid = null;
 		}
-		doLayout();
+		layoutCommand.execute();
 	}
 
 	@Override
