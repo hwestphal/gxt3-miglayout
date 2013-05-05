@@ -78,7 +78,7 @@ public final class MigLayoutContainer extends InsertResizeContainer {
 	private final AC rowConstraints;
 
 	private Grid grid;
-	private boolean secondPass;
+	private boolean secondPassRequired;
 	private boolean debug;
 
 	public MigLayoutContainer() {
@@ -155,36 +155,27 @@ public final class MigLayoutContainer extends InsertResizeContainer {
 	}
 
 	public void layout() {
-		layout(false);
-	}
-
-	public void layout(boolean cleanCache) {
-		if (cleanCache) {
-			widgetMap.clear();
-			ccMap.clear();
-			grid = null;
-		}
 		layoutCommand.execute();
 	}
 
 	@Override
 	protected void doLayout() {
-		if (grid == null) {
-			if (secondPass) {
-				for (int i = 0; i < getWidgetCount(); i++) {
-					Widget widget = getWidget(i);
-					if (!widgetMap.containsKey(widget)) {
-						wrapWidget(widget);
-					}
-				}
-				secondPass = false;
-				grid = new Grid(containerWrapper, layoutConstraints, rowConstraints, colConstraints, ccMap, layoutCallbacks);
-			} else {
-				secondPass = true;
-				Scheduler.get().scheduleDeferred(layoutCommand);
-				return;
-			}
+		if (secondPassRequired) {
+			secondPassRequired = false;
+			Scheduler.get().scheduleDeferred(layoutCommand);
+			return;
 		}
+
+		if (grid == null) {
+			for (int i = 0; i < getWidgetCount(); i++) {
+				Widget widget = getWidget(i);
+				if (!widgetMap.containsKey(widget)) {
+					wrapWidget(widget);
+				}
+			}
+			grid = new Grid(containerWrapper, layoutConstraints, rowConstraints, colConstraints, ccMap, layoutCallbacks);
+		}
+		
 		grid.layout(new int[] { 0, 0, getOffsetWidth(true), getOffsetHeight(true) }, null, null, debug, false);
 		if (debug) {
 			grid.paintDebug();
@@ -211,6 +202,7 @@ public final class MigLayoutContainer extends InsertResizeContainer {
 	protected void onInsert(int index, Widget child) {
 		child.getElement().getStyle().setPosition(Position.ABSOLUTE);
 		grid = null;
+		secondPassRequired = true;
 	}
 
 	@Override
