@@ -177,6 +177,7 @@ public final class MigLayoutContainer extends InsertResizeContainer {
 		}
 		
 		grid.layout(new int[] { 0, 0, getOffsetWidth(true), getOffsetHeight(true) }, null, null, debug, false);
+		containerWrapper.removeDebugOverlays();
 		if (debug) {
 			grid.paintDebug();
 		}

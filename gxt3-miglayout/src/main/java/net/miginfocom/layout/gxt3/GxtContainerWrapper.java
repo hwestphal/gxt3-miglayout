@@ -74,11 +74,10 @@ class GxtContainerWrapper extends GxtComponentWrapper implements ContainerWrappe
 
 	@Override
 	public void paintDebugOutline() {
-		removeDebugOverlays();
 		paintDebug(0, 0, container.getOffsetWidth(true), container.getOffsetHeight(true), "blue");
 	}
 
-	private void removeDebugOverlays() {
+	void removeDebugOverlays() {
 		Element root = container.getElement();
 		for (Element overlay : debugOverlays) {
 			root.removeChild(overlay);
