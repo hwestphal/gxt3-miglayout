@@ -103,7 +103,7 @@ class GxtContainerWrapper extends GxtComponentWrapper implements ContainerWrappe
 		style.setBorderStyle(BorderStyle.DASHED);
 		style.setBorderWidth(1, Unit.PX);
 		style.setProperty("pointerEvents", "none");
-		overlay.setBounds(x + 1, y + 1, width - 2, height - 2);
+		overlay.setBounds(x, y, width - 2, height - 2);
 		container.getElement().appendChild(overlay);
 		debugOverlays.add(overlay);
 	}
