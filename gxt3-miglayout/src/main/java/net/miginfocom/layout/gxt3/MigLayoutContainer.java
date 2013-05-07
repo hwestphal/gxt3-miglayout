@@ -167,15 +167,10 @@ public final class MigLayoutContainer extends InsertResizeContainer {
 		}
 
 		if (grid == null) {
-			for (int i = 0; i < getWidgetCount(); i++) {
-				Widget widget = getWidget(i);
-				if (!widgetMap.containsKey(widget)) {
-					wrapWidget(widget);
-				}
-			}
+			wrapWidgets();
 			grid = new Grid(containerWrapper, layoutConstraints, rowConstraints, colConstraints, ccMap, layoutCallbacks);
 		}
-		
+
 		grid.layout(new int[] { 0, 0, getOffsetWidth(true), getOffsetHeight(true) }, null, null, debug, false);
 		containerWrapper.removeDebugOverlays();
 		if (debug) {
@@ -183,8 +178,24 @@ public final class MigLayoutContainer extends InsertResizeContainer {
 		}
 	}
 
+	private void wrapWidgets() {
+		for (int i = 0; i < getWidgetCount(); i++) {
+			Widget widget = getWidget(i);
+			if (!widgetMap.containsKey(widget)) {
+				wrapWidget(widget);
+			}
+		}
+	}
+
 	private void wrapWidget(Widget widget) {
+		boolean invisible = !widget.isVisible();
+		if (invisible) {
+			widget.setVisible(true);
+		}
 		ComponentWrapper wrapper = new GxtComponentWrapper(widget, containerWrapper, widget.getOffsetWidth(), widget.getOffsetHeight());
+		if (invisible) {
+			widget.setVisible(false);
+		}
 		widgetMap.put(widget, wrapper);
 
 		Object layoutData = widget.getLayoutData();
