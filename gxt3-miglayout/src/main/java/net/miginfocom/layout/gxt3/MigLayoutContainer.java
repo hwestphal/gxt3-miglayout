@@ -154,6 +154,10 @@ public final class MigLayoutContainer extends InsertResizeContainer {
 		insert(child, beforeIndex);
 	}
 
+	/**
+	 * Triggers a new layout, e.g. after adding or removing a widget from an
+	 * already visible container.
+	 */
 	public void layout() {
 		layoutCommand.execute();
 	}
