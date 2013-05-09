@@ -40,11 +40,14 @@ import net.miginfocom.layout.LC;
 import net.miginfocom.layout.LayoutCallback;
 
 import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.Style.Overflow;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.uibinder.client.UiChild;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
+import com.sencha.gxt.core.client.dom.XDOM;
 import com.sencha.gxt.core.client.util.Rectangle;
 import com.sencha.gxt.widget.core.client.container.InsertResizeContainer;
 
@@ -175,7 +178,7 @@ public final class MigLayoutContainer extends InsertResizeContainer {
 			grid = new Grid(containerWrapper, layoutConstraints, rowConstraints, colConstraints, ccMap, layoutCallbacks);
 		}
 
-		grid.layout(new int[] { 0, 0, getOffsetWidth(true), getOffsetHeight(true) }, null, null, debug, false);
+		grid.layout(new int[] { 0, 0, getLayoutWidth(), getLayoutHeight() }, null, null, debug, false);
 		containerWrapper.removeDebugOverlays();
 		if (debug) {
 			grid.paintDebug();
@@ -240,6 +243,26 @@ public final class MigLayoutContainer extends InsertResizeContainer {
 			components[i] = widgetMap.get(getWidget(i));
 		}
 		return components;
+	}
+
+	int getLayoutWidth() {
+		int w = getOffsetWidth(true);
+		Element elem = getElement();
+		String overflow = elem.getStyle().getOverflow();
+		if (Overflow.AUTO.getCssName().equals(overflow) && elem.getScrollHeight() > elem.getClientHeight() || Overflow.SCROLL.getCssName().equals(overflow)) {
+			w -= XDOM.getScrollBarWidth();
+		}
+		return w;
+	}
+
+	int getLayoutHeight() {
+		int h = getOffsetHeight(true);
+		Element elem = getElement();
+		String overflow = elem.getStyle().getOverflow();
+		if (Overflow.AUTO.getCssName().equals(overflow) && elem.getScrollWidth() > elem.getClientWidth() || Overflow.SCROLL.getCssName().equals(overflow)) {
+			h -= XDOM.getScrollBarWidth();
+		}
+		return h;
 	}
 
 }
