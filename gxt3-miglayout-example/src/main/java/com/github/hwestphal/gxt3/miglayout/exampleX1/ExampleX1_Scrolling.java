@@ -25,29 +25,18 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
  * DAMAGE.
  */
-package com.github.hwestphal.gxt3.miglayout;
+package com.github.hwestphal.gxt3.miglayout.exampleX1;
 
-import com.github.hwestphal.gxt3.miglayout.example01.Example01_Quickstart;
-import com.github.hwestphal.gxt3.miglayout.example02.Example02_Plain;
-import com.github.hwestphal.gxt3.miglayout.example03.Example03_Alignments;
-import com.github.hwestphal.gxt3.miglayout.example04.Example04_CellAlignments;
-import com.github.hwestphal.gxt3.miglayout.example21.Example21_Debug;
-import com.github.hwestphal.gxt3.miglayout.exampleX1.ExampleX1_Scrolling;
-import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.user.client.ui.RootLayoutPanel;
+import com.github.hwestphal.gxt3.miglayout.ExampleItem;
+import com.github.hwestphal.gxt3.miglayout.ExampleTab;
 
-public class Example implements EntryPoint {
+public class ExampleX1_Scrolling extends ExampleItem {
 
-	@Override
-	public void onModuleLoad() {
-		ExampleBrowser exampleBrowser = new ExampleBrowser();
-		exampleBrowser.addExample(new Example01_Quickstart());
-		exampleBrowser.addExample(new Example02_Plain());
-		exampleBrowser.addExample(new Example03_Alignments());
-		exampleBrowser.addExample(new Example04_CellAlignments());
-		exampleBrowser.addExample(new Example21_Debug());
-		exampleBrowser.addExample(new ExampleX1_Scrolling());
-		RootLayoutPanel.get().add(exampleBrowser);
+	public ExampleX1_Scrolling() {
+		super(
+				"Scrolling",
+				"Click on the three diffent buttons. Each of them will open a dialog containing a MigLayout form with a different overflow mode (no scrollbars, always visible scrollbars and automatic scrollbars). Turn on the debug mode with the dialog's checkbox button and resize the dialog to see the actual size of the layouted area.",
+				new ExampleTab("Scrolling", new ExampleX1_Scrolling_Content()));
 	}
 
 }
