@@ -43,7 +43,7 @@ import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.form.CheckBox;
 import com.sencha.gxt.widget.core.client.form.TextField;
 
-public class ExampleX1_Scrolling_Content implements IsWidget {
+public class ExampleX1_Scrollbars_Content implements IsWidget {
 
 	private MigLayoutContainer container;
 
@@ -51,9 +51,9 @@ public class ExampleX1_Scrolling_Content implements IsWidget {
 	public Widget asWidget() {
 		if (container == null) {
 			container = new MigLayoutContainer();
-			container.add(createDialogButton("Hidden Scrollbar", Overflow.HIDDEN));
-			container.add(createDialogButton("Visible Scrollbar", Overflow.SCROLL));
-			container.add(createDialogButton("Auto Scrollbar", Overflow.AUTO));
+			container.add(createDialogButton("Hidden Scrollbars", Overflow.HIDDEN));
+			container.add(createDialogButton("Visible Scrollbars", Overflow.SCROLL));
+			container.add(createDialogButton("Auto Scrollbars", Overflow.AUTO));
 		}
 		return container;
 	}
