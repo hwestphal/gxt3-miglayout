@@ -33,10 +33,20 @@
  */
 package com.github.hwestphal.gxt3.miglayout.example22;
 
+import java.util.Arrays;
+
 import net.miginfocom.layout.gxt3.MigLayoutContainer;
 
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
+import com.sencha.gxt.core.client.IdentityValueProvider;
+import com.sencha.gxt.data.shared.ListStore;
+import com.sencha.gxt.data.shared.ModelKeyProvider;
+import com.sencha.gxt.widget.core.client.ListView;
+import com.sencha.gxt.widget.core.client.button.TextButton;
+import com.sencha.gxt.widget.core.client.form.ListField;
+import com.sencha.gxt.widget.core.client.form.TextField;
 
 public class Example22_LayoutShowdown_Improved implements IsWidget {
 
@@ -45,8 +55,49 @@ public class Example22_LayoutShowdown_Improved implements IsWidget {
 	@Override
 	public Widget asWidget() {
 		if (container == null) {
-			container = new MigLayoutContainer();
+			container = new MigLayoutContainer("", "[]15[][grow,fill]15[][grow,fill]");
+
+			container.add(createListField("Mouse, Mickey", "Duck, Donald"), "spany, growy, wmin 150");
+
+			container.add(new Label("Last Name"));
+			container.add(new TextField());
+			container.add(new Label("First Name"));
+			container.add(new TextField(), "wrap");
+			container.add(new Label("Phone"));
+			container.add(new TextField());
+			container.add(new Label("Email"));
+			container.add(new TextField(), "wrap");
+			container.add(new Label("Address 1"));
+			container.add(new TextField(), "span");
+			container.add(new Label("Address 2"));
+			container.add(new TextField(), "span");
+			container.add(new Label("City"));
+			container.add(new TextField(), "wrap");
+			container.add(new Label("State"));
+			container.add(new TextField());
+			container.add(new Label("Postal Code"));
+			container.add(new TextField(), "growx 0, wrap");
+			container.add(new Label("Country"));
+			container.add(new TextField(), "wrap 15");
+
+			container.add(new TextButton("New"), "tag other, span, split");
+			container.add(new TextButton("Delete"), "tag other");
+			container.add(new TextButton("Edit"), "tag other");
+			container.add(new TextButton("Save"), "tag other");
+			container.add(new TextButton("Cancel"), "tag cancel, wrap push");
 		}
 		return container;
 	}
+
+	private Widget createListField(String... item) {
+		ListStore<String> listStore = new ListStore<String>(new ModelKeyProvider<String>() {
+			@Override
+			public String getKey(String item) {
+				return item;
+			}
+		});
+		listStore.addAll(Arrays.asList(item));
+		return new ListField<String, String>(new ListView<String, String>(listStore, new IdentityValueProvider<String>()));
+	}
+
 }

@@ -41,7 +41,7 @@ public class Example22_LayoutShowdown extends ExampleItem {
 	public Example22_LayoutShowdown() {
 		super(
 				"Layout Showdown",
-				"This is an implementation of the Layout Showdown posted on java.net by John O'Conner. The first tab is a pure implemenetation of the showdown that follows all the rules. The second tab is a slightly fixed version that follows some improved layout guidelines. Note the simplification of the code for the fixed version. Writing better layouts with MiG Layout is easier than writing bad. (Reference: http://weblogs.java.net/blog/joconner/archive/2006/10/more_informatio.html)",
+				"This is an implementation of the Layout Showdown posted on java.net by John O'Conner. The first tab is a pure implementation of the showdown that follows all the rules. The second tab is a slightly fixed version that follows some improved layout guidelines. Note the simplification of the code for the fixed version. Writing better layouts with MiG Layout is easier than writing bad. (Reference: http://weblogs.java.net/blog/joconner/archive/2006/10/more_informatio.html)",
 				new ExampleTab("Layout Showdown (pure)", new Example22_LayoutShowdown_Pure()), new ExampleTab("Layout Showdown (improved)",
 						new Example22_LayoutShowdown_Improved()));
 	}
