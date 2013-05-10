@@ -90,8 +90,12 @@ public final class CC
 
 	/** Empty constructor.
 	 */
-	public CC()
+	CC()
 	{
+	}
+
+	public static CC cc() {
+		return new CC();
 	}
 
 	String[] getLinkTargets()

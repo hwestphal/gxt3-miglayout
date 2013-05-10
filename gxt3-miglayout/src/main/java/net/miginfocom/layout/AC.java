@@ -54,9 +54,13 @@ public final class AC
 	/** Constructor. Creates an instance that can be configured manually. Will be initialized with a default
 	 * {@link net.miginfocom.layout.DimConstraint}.
 	 */
-	public AC()
+	AC()
 	{
 		cList.add(new DimConstraint());
+	}
+	
+	public static AC ac() {
+		return new AC();
 	}
 
 	/** Property. The different {@link net.miginfocom.layout.DimConstraint}s that this object consists of.

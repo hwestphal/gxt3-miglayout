@@ -41,8 +41,12 @@ public final class LC
 
 	/** Empty constructor.
 	 */
-	public LC()
+	LC()
 	{
+	}
+
+	public static LC lc() {
+		return new LC();
 	}
 
 	// ************************************************************************
