@@ -25,35 +25,15 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
  * DAMAGE.
  */
-package com.github.hwestphal.gxt3.miglayout;
+package com.github.hwestphal.gxt3.miglayout.exampleX2;
 
-import com.github.hwestphal.gxt3.miglayout.example01.Example01_Quickstart;
-import com.github.hwestphal.gxt3.miglayout.example02.Example02_Plain;
-import com.github.hwestphal.gxt3.miglayout.example03.Example03_Alignments;
-import com.github.hwestphal.gxt3.miglayout.example04.Example04_CellAlignments;
-import com.github.hwestphal.gxt3.miglayout.example21.Example21_Debug;
-import com.github.hwestphal.gxt3.miglayout.example22.Example22_LayoutShowdown;
-import com.github.hwestphal.gxt3.miglayout.example23.Example23_ConstraintsAPI;
-import com.github.hwestphal.gxt3.miglayout.exampleX1.ExampleX1_Scrollbars;
-import com.github.hwestphal.gxt3.miglayout.exampleX2.ExampleX2_GxtForms;
-import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.user.client.ui.RootLayoutPanel;
+import com.github.hwestphal.gxt3.miglayout.ExampleItem;
+import com.github.hwestphal.gxt3.miglayout.ExampleTab;
 
-public class Example implements EntryPoint {
+public class ExampleX2_GxtForms extends ExampleItem {
 
-	@Override
-	public void onModuleLoad() {
-		ExampleBrowser exampleBrowser = new ExampleBrowser();
-		exampleBrowser.addExample(new Example01_Quickstart());
-		exampleBrowser.addExample(new Example02_Plain());
-		exampleBrowser.addExample(new Example03_Alignments());
-		exampleBrowser.addExample(new Example04_CellAlignments());
-		exampleBrowser.addExample(new Example21_Debug());
-		exampleBrowser.addExample(new Example22_LayoutShowdown());
-		exampleBrowser.addExample(new Example23_ConstraintsAPI());
-		exampleBrowser.addExample(new ExampleX1_Scrollbars());
-		exampleBrowser.addExample(new ExampleX2_GxtForms());
-		RootLayoutPanel.get().add(exampleBrowser);
+	public ExampleX2_GxtForms() {
+		super("GXT Forms", "", new ExampleTab("GXT Forms", new ExampleX2_GxtForms_Content()));
 	}
 
 }
