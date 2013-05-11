@@ -25,18 +25,56 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
  * DAMAGE.
  */
-package com.github.hwestphal.gxt3.miglayout.exampleX2;
+package com.github.hwestphal.gxt3.miglayout.widget;
 
-import com.github.hwestphal.gxt3.miglayout.ExampleItem;
-import com.github.hwestphal.gxt3.miglayout.ExampleTab;
+import java.util.List;
 
-public class ExampleX2_GxtForms extends ExampleItem {
+import net.miginfocom.layout.gxt3.MigLayoutContainer;
 
-	public ExampleX2_GxtForms() {
-		super(
-				"GXT Forms",
-				"This example shows how to use GXT field validation together with MigLayout. Since the default com.sencha.gxt.widget.core.client.form.error.SideErrorHandler doesn't work well with MigLayout, a replacement is used. See the source code for details.",
-				new ExampleTab("GXT Forms", new ExampleX2_GxtForms_Content()));
+import com.google.gwt.core.shared.GWT;
+import com.google.gwt.editor.client.EditorError;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Widget;
+import com.sencha.gxt.widget.core.client.form.error.ErrorHandler;
+import com.sencha.gxt.widget.core.client.form.error.SideErrorHandler.SideErrorResources;
+
+public class ErrorLabel implements IsWidget, ErrorHandler {
+
+	private static final SideErrorResources RESOURCES = GWT.create(SideErrorResources.class);
+
+	private final Widget image;
+	private final Label label;
+	private final MigLayoutContainer container;
+
+	public ErrorLabel() {
+		image = new Image(RESOURCES.errorIcon());
+		image.setVisible(false);
+		label = new Label("M", false);
+		label.setVisible(false);
+		container = new MigLayoutContainer("", "0[][grow]0", "0[grow]0");
+		container.add(image, "hmin pref, wmin pref");
+		container.add(label);
+	}
+
+	@Override
+	public Widget asWidget() {
+		return container;
+	}
+
+	@Override
+	public void clearInvalid() {
+		image.setVisible(false);
+		label.setText("");
+		label.setVisible(false);
+	}
+
+	@Override
+	public void markInvalid(List<EditorError> errors) {
+		image.setVisible(true);
+		label.setText(errors.get(0).getMessage());
+		label.setVisible(true);
 	}
 
 }
