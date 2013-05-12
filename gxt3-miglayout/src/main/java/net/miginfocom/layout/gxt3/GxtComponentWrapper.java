@@ -30,12 +30,21 @@ package net.miginfocom.layout.gxt3;
 import net.miginfocom.layout.ComponentWrapper;
 import net.miginfocom.layout.ContainerWrapper;
 import net.miginfocom.layout.LayoutUtil;
-import net.miginfocom.layout.PlatformDefaults;
 
+import com.google.gwt.core.client.JsArrayInteger;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.widget.core.client.container.Container;
 
 class GxtComponentWrapper implements ComponentWrapper {
+	
+	private static final int HORIZONTAL_DPI;
+	private static final int VERTICAL_DPI;
+
+	static {
+		JsArrayInteger dpi = screenDpi();
+		HORIZONTAL_DPI = dpi.get(0);
+		VERTICAL_DPI = dpi.get(1);
+	}
 
 	private final Widget widget;
 	private final GxtContainerWrapper container;
@@ -153,14 +162,12 @@ class GxtComponentWrapper implements ComponentWrapper {
 
 	@Override
 	public int getHorizontalScreenDPI() {
-		// TODO determine screen resolution
-		return PlatformDefaults.getDefaultDPI();
+		return HORIZONTAL_DPI;
 	}
 
 	@Override
 	public int getVerticalScreenDPI() {
-		// TODO determine screen resolution
-		return PlatformDefaults.getDefaultDPI();
+		return VERTICAL_DPI;
 	}
 
 	@Override
@@ -206,5 +213,19 @@ class GxtComponentWrapper implements ComponentWrapper {
 	private static native int screenWidth() /*-{ return $wnd.screen.width; }-*/;
 
 	private static native int screenHeight() /*-{ return $wnd.screen.height; }-*/;
+	
+	private static native JsArrayInteger screenDpi() /*-{
+		var h, v, div = $doc.createElement('div');
+		div.style.position = 'absolute';
+		div.style.top = '-1000px';
+		div.style.left = '-1000px';
+		div.style.width = '1in';
+		div.style.height = '1in';
+		$doc.body.appendChild(div);
+		h = div.clientWidth;
+		v = div.clientHeight;
+		$doc.body.removeChild($doc.body.lastChild);
+		return [h, v];
+	}-*/;
 
 }
