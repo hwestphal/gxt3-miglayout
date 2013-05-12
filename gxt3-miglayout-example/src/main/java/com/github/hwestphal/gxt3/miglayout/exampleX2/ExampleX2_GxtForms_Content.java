@@ -31,7 +31,6 @@ import java.util.List;
 
 import net.miginfocom.layout.gxt3.MigLayoutContainer;
 
-import com.github.hwestphal.gxt3.miglayout.exampleX2.ExampleX2_GxtForms_Content.Contact;
 import com.github.hwestphal.gxt3.miglayout.widget.ErrorImage;
 import com.github.hwestphal.gxt3.miglayout.widget.ErrorLabel;
 import com.google.gwt.core.client.GWT;
@@ -56,30 +55,28 @@ public class ExampleX2_GxtForms_Content implements IsWidget, Editor<Contact> {
 	interface Driver extends SimpleBeanEditorDriver<Contact, ExampleX2_GxtForms_Content> {
 	}
 
-	Driver driver = GWT.create(Driver.class);
-
 	TextField firstName;
 	TextField surname;
 	TextField address;
 	TextField phone;
 	TextField email;
 
-	private MigLayoutContainer container;
 	private AdapterField<Contact> form;
 
 	@Override
 	public Widget asWidget() {
 		if (form == null) {
-			container = new MigLayoutContainer();
+			MigLayoutContainer container = new MigLayoutContainer();
 			final ErrorLabel formError = new ErrorLabel();
 			container.add(formError, "hmin 30, span, grow, wrap");
-			firstName = addTextField("First Name*", "", "", "", new EmptyValidator<String>());
-			surname = addTextField("Surname*", "gap unrelated", "", "wrap", new EmptyValidator<String>());
-			address = addTextField("Address*", "", "span 4, grow", "wrap", new EmptyValidator<String>(), new MinLengthValidator(7));
-			phone = addTextField("Phone", "", "", "");
-			email = addTextField("Email", "gap unrelated", "", "", new RegExValidator(
+			firstName = addTextField(container, "First Name*", "", "", "", new EmptyValidator<String>());
+			surname = addTextField(container, "Surname*", "gap unrelated", "", "wrap", new EmptyValidator<String>());
+			address = addTextField(container, "Address*", "", "span 4, grow", "wrap", new EmptyValidator<String>(), new MinLengthValidator(7));
+			phone = addTextField(container, "Phone", "", "", "");
+			email = addTextField(container, "Email", "gap unrelated", "", "", new RegExValidator(
 					"^([\\w\\-\\.]+)@((\\[([0-9]{1,3}\\.){3}[0-9]{1,3}\\])|(([\\w\\-]+\\.)+)([A-Za-z]{2,4}))$", "Must be a valid email address"));
 
+			final Driver driver = GWT.create(Driver.class);
 			driver.initialize(this);
 
 			form = new AdapterField<Contact>(container) {
@@ -109,7 +106,7 @@ public class ExampleX2_GxtForms_Content implements IsWidget, Editor<Contact> {
 		return form;
 	}
 
-	private TextField addTextField(String label, String labelCC, String fieldCC, String errorCC, Validator<?>... validators) {
+	private TextField addTextField(MigLayoutContainer container, String label, String labelCC, String fieldCC, String errorCC, Validator<?>... validators) {
 		final TextField field = new TextField();
 		for (Validator<?> validator : validators) {
 			@SuppressWarnings("unchecked")
@@ -131,54 +128,6 @@ public class ExampleX2_GxtForms_Content implements IsWidget, Editor<Contact> {
 		container.add(error, errorCC);
 
 		return field;
-	}
-
-	static class Contact {
-		private String firstName;
-		private String surname;
-		private String address;
-		private String phone;
-		private String email;
-
-		String getFirstName() {
-			return firstName;
-		}
-
-		void setFirstName(String firstName) {
-			this.firstName = firstName;
-		}
-
-		String getSurname() {
-			return surname;
-		}
-
-		void setSurname(String surname) {
-			this.surname = surname;
-		}
-
-		String getAddress() {
-			return address;
-		}
-
-		void setAddress(String address) {
-			this.address = address;
-		}
-
-		String getPhone() {
-			return phone;
-		}
-
-		void setPhone(String phone) {
-			this.phone = phone;
-		}
-
-		String getEmail() {
-			return email;
-		}
-
-		void setEmail(String email) {
-			this.email = email;
-		}
 	}
 
 }
