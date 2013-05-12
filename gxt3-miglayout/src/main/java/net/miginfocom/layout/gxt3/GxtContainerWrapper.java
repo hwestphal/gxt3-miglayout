@@ -37,11 +37,14 @@ import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.Style.BorderStyle;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.core.client.dom.XElement;
 
 class GxtContainerWrapper extends GxtComponentWrapper implements ContainerWrapper {
+
+	private static final boolean LEFT_TO_RIGHT = !LocaleInfo.getCurrentLocale().isRTL();
 
 	private final MigLayoutContainer container;
 	private final List<XElement> debugOverlays = new ArrayList<XElement>();
@@ -68,8 +71,7 @@ class GxtContainerWrapper extends GxtComponentWrapper implements ContainerWrappe
 
 	@Override
 	public boolean isLeftToRight() {
-		// TODO support RTL containers
-		return true;
+		return LEFT_TO_RIGHT;
 	}
 
 	@Override
