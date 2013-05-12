@@ -67,7 +67,7 @@ public class ExampleX2_GxtForms_Content implements IsWidget, Editor<Contact> {
 	public Widget asWidget() {
 		if (form == null) {
 			MigLayoutContainer container = new MigLayoutContainer();
-			final ErrorLabel formError = new ErrorLabel();
+			ErrorLabel formError = new ErrorLabel();
 			container.add(formError, "hmin 30, span, grow, wrap");
 			firstName = addTextField(container, "First Name*", "", "", "", new EmptyValidator<String>());
 			surname = addTextField(container, "Surname*", "gap unrelated", "", "wrap", new EmptyValidator<String>());
