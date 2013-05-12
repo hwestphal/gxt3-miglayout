@@ -31,6 +31,7 @@ import com.github.hwestphal.gxt3.miglayout.example01.Example01_Quickstart;
 import com.github.hwestphal.gxt3.miglayout.example02.Example02_Plain;
 import com.github.hwestphal.gxt3.miglayout.example03.Example03_Alignments;
 import com.github.hwestphal.gxt3.miglayout.example04.Example04_CellAlignments;
+import com.github.hwestphal.gxt3.miglayout.example15.Example15_Orientation;
 import com.github.hwestphal.gxt3.miglayout.example21.Example21_Debug;
 import com.github.hwestphal.gxt3.miglayout.example22.Example22_LayoutShowdown;
 import com.github.hwestphal.gxt3.miglayout.example23.Example23_ConstraintsAPI;
@@ -48,6 +49,7 @@ public class Example implements EntryPoint {
 		exampleBrowser.addExample(new Example02_Plain());
 		exampleBrowser.addExample(new Example03_Alignments());
 		exampleBrowser.addExample(new Example04_CellAlignments());
+		exampleBrowser.addExample(new Example15_Orientation());
 		exampleBrowser.addExample(new Example21_Debug());
 		exampleBrowser.addExample(new Example22_LayoutShowdown());
 		exampleBrowser.addExample(new Example23_ConstraintsAPI());
