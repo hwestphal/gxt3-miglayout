@@ -156,7 +156,7 @@ class GxtComponentWrapper implements ComponentWrapper {
 
 	@Override
 	public float getPixelUnitFactor(boolean isHor) {
-		// TODO determine pixel unit factor
+		// CSS pixels are always logical pixels
 		return 1.0f;
 	}
 
