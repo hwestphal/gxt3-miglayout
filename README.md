@@ -8,7 +8,8 @@ MigLayout for GXT 3 uses Sencha GXT 3 which is distributed under the terms of th
 
 ## How to build
 
-    > cd gxt3-miglayout
+    > git clone https://github.com/hwestphal/gxt3-miglayout.git
+    > cd gxt3-miglayout/gxt3-miglayout
     > mvn clean install
   
 ## How to use in your project
