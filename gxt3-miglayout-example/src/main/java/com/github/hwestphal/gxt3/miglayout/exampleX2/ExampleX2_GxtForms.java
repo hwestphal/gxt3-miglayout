@@ -34,6 +34,7 @@ public class ExampleX2_GxtForms extends ExampleItem {
 
 	public ExampleX2_GxtForms() {
 		super(
+				"forms",
 				"GXT Forms",
 				"This example shows how to use GXT field validation together with MigLayout. Since the default com.sencha.gxt.widget.core.client.form.error.SideErrorHandler doesn't work well with MigLayout, a replacement is used. See the source code for details.",
 				new ExampleTab("GXT Forms", new ExampleX2_GxtForms_Content()));

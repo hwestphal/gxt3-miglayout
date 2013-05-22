@@ -34,6 +34,7 @@ public class ExampleX1_Scrollbars extends ExampleItem {
 
 	public ExampleX1_Scrollbars() {
 		super(
+				"scrollbars",
 				"Scrollbars",
 				"Click on the three different buttons. Each of them will open a dialog containing a MigLayout form with a different overflow mode (no scrollbars, always visible scrollbars and automatic scrollbars). Turn on the debug mode with the dialog's checkbox button and resize the dialog to see the actual size of the layouted area.",
 				new ExampleTab("Scrollbars", new ExampleX1_Scrollbars_Content()));

@@ -40,6 +40,7 @@ public class Example21_Debug extends ExampleItem {
 
 	public Example21_Debug() {
 		super(
+				"debug",
 				"Debug",
 				"Demonstrates the non-intrusive way to get visual debugging aid. There is no need to use a special DebugPanel or anything that will need code changes. The user can simply turn on debug on the layout manager by using the \"debug\" constraint and it will continuously repaint the panel with debug information on top. This means you don't have to change your code to debug!",
 				new ExampleTab("Debug", new Example21_Debug_Content()));

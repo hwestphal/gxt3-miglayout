@@ -40,6 +40,7 @@ public class Example23_ConstraintsAPI extends ExampleItem {
 
 	public Example23_ConstraintsAPI() {
 		super(
+				"constraints",
 				"Constraints API",
 				"This dialog shows the constraints API. It works the same way as the string constraints but with chained method calls. See the source code for details.",
 				new ExampleTab("Constraints API", new Example23_ConstraintsAPI_Content()));

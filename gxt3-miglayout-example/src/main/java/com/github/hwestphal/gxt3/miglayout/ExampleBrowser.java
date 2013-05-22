@@ -27,14 +27,20 @@
  */
 package com.github.hwestphal.gxt3.miglayout;
 
+import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Map;
 
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.Style.Cursor;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.HTML;
@@ -61,7 +67,10 @@ public class ExampleBrowser implements IsWidget {
 	private static final String SELECTED_EXAMPLE_STYLE = "selected-example";
 
 	private final Map<Widget, String> exampleSources = new IdentityHashMap<Widget, String>();
+	private final Map<String, ExampleItem> exampleItems = new HashMap<String, ExampleItem>();
+	private final Map<String, Widget> exampleLabels = new HashMap<String, Widget>();
 	private final BorderLayoutContainer rootContainer;
+
 	private FlowLayoutContainer exampleBrowser;
 	private TabPanel tabPanel;
 	private HTML descriptionArea;
@@ -71,6 +80,18 @@ public class ExampleBrowser implements IsWidget {
 		rootContainer = new BorderLayoutContainer();
 		rootContainer.setWestWidget(createBrowserPanel());
 		rootContainer.setCenterWidget(createCenterPanel());
+		History.addValueChangeHandler(new ValueChangeHandler<String>() {
+			@Override
+			public void onValueChange(ValueChangeEvent<String> event) {
+				setContent(event.getValue());
+			}
+		});
+		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+			@Override
+			public void execute() {
+				setContent(History.getToken());
+			}
+		});
 	}
 
 	private IsWidget createCenterPanel() {
@@ -90,8 +111,6 @@ public class ExampleBrowser implements IsWidget {
 		layoutData.setCollapseMini(true);
 		contentPanel.setLayoutData(layoutData);
 		descriptionArea = new HTML();
-		descriptionArea
-				.setHTML("MigLayout and MigLayout examples \u00A9 Mikael Grev, MiG InfoCom AB<br /><br />MigLayout for GXT 3 \u00A9 Harald Westphal<br /><br />MigLayout for GXT 3 uses Sencha GXT 3 which is distributed under the terms of the GPL v3 (<a href=\"http://www.sencha.com/products/gxt/license/\">http://www.sencha.com/products/gxt/license/</a>)");
 		descriptionArea.setLayoutData(new MarginData(5));
 		FlowLayoutContainer container = new FlowLayoutContainer();
 		container.setScrollMode(ScrollMode.AUTO);
@@ -111,7 +130,6 @@ public class ExampleBrowser implements IsWidget {
 				Window.open(SOURCE_BASE_URL + path, "_blank", "");
 			}
 		});
-		downloadButton.setVisible(false);
 		return downloadButton;
 	}
 
@@ -120,7 +138,6 @@ public class ExampleBrowser implements IsWidget {
 		BorderLayoutData layoutData = new BorderLayoutData();
 		layoutData.setMargins(new Margins(0, 5, 5, 0));
 		tabPanel.setLayoutData(layoutData);
-		tabPanel.add(new Frame(MIGLAYOUT_URL), "miglayout.com");
 		return tabPanel;
 	}
 
@@ -145,6 +162,8 @@ public class ExampleBrowser implements IsWidget {
 	}
 
 	public void addExample(final ExampleItem example) {
+		final String token = example.getToken();
+		exampleItems.put(token, example);
 		final Label label = new Label(example.getTitle(), false);
 		label.setLayoutData(new MarginData(5));
 		label.addMouseOverHandler(new MouseOverHandler() {
@@ -156,30 +175,38 @@ public class ExampleBrowser implements IsWidget {
 		label.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				markExample(label);
-				showExample(example);
+				History.newItem(token);
 			}
 		});
 		exampleBrowser.add(label);
+		exampleLabels.put(token, label);
 	}
 
-	private void markExample(Widget label) {
-		for (int i = 0; i < exampleBrowser.getWidgetCount(); i++) {
-			exampleBrowser.getWidget(i).setStyleName(SELECTED_EXAMPLE_STYLE, false);
-		}
-		label.setStyleName(SELECTED_EXAMPLE_STYLE, true);
-	}
-
-	private void showExample(ExampleItem example) {
-		downloadButton.setVisible(true);
-		descriptionArea.setText(example.getDescription());
+	private void setContent(String token) {
 		while (tabPanel.getWidgetCount() > 0) {
 			tabPanel.remove(0);
 		}
 		exampleSources.clear();
-		for (ExampleTab exampleTab : example.getExampleTabs()) {
-			tabPanel.add(exampleTab, new TabItemConfig(exampleTab.getTitle()));
-			exampleSources.put(exampleTab.asWidget(), exampleTab.getSourcePath());
+		for (int i = 0; i < exampleBrowser.getWidgetCount(); i++) {
+			exampleBrowser.getWidget(i).setStyleName(SELECTED_EXAMPLE_STYLE, false);
+		}
+
+		ExampleItem example = exampleItems.get(token);
+
+		if (example == null) {
+			downloadButton.setVisible(false);
+			descriptionArea
+					.setHTML("MigLayout and MigLayout examples \u00A9 Mikael Grev, MiG InfoCom AB<br /><br />MigLayout for GXT 3 \u00A9 Harald Westphal<br /><br />MigLayout for GXT 3 uses Sencha GXT 3 which is distributed under the terms of the GPL v3 (<a href=\"http://www.sencha.com/products/gxt/license/\">http://www.sencha.com/products/gxt/license/</a>)");
+			tabPanel.add(new Frame(MIGLAYOUT_URL), "miglayout.com");
+
+		} else {
+			exampleLabels.get(token).setStyleName(SELECTED_EXAMPLE_STYLE, true);
+			downloadButton.setVisible(true);
+			descriptionArea.setText(example.getDescription());
+			for (ExampleTab exampleTab : example.getExampleTabs()) {
+				tabPanel.add(exampleTab, new TabItemConfig(exampleTab.getTitle()));
+				exampleSources.put(exampleTab.asWidget(), exampleTab.getSourcePath());
+			}
 		}
 	}
 

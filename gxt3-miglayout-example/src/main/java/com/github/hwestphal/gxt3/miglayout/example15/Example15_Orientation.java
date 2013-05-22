@@ -40,6 +40,7 @@ public class Example15_Orientation extends ExampleItem {
 
 	public Example15_Orientation() {
 		super(
+				"orientation",
 				"Orientation",
 				"MigLayout supports not only right-to-left orientation, but also bottom-to-top. You can even set the flow direction so that the flow is vertical instead of horizontal. It will automatically pick up if right-to-left is to be used depending on the ComponentWrapper, but it can also be manually set for every layout.",
 				new ExampleTab("Orientation", new Example15_Orientation_Content()));

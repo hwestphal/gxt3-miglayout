@@ -33,14 +33,20 @@ import java.util.List;
 
 public class ExampleItem {
 
+	private final String token;
 	private final String title;
 	private final String description;
 	private final List<ExampleTab> exampleTabs;
 
-	public ExampleItem(String title, String description, ExampleTab... exampleTabs) {
+	public ExampleItem(String token, String title, String description, ExampleTab... exampleTabs) {
+		this.token = token;
 		this.title = title;
 		this.description = description;
 		this.exampleTabs = Collections.unmodifiableList(Arrays.asList(exampleTabs));
+	}
+
+	public String getToken() {
+		return token;
 	}
 
 	public String getTitle() {

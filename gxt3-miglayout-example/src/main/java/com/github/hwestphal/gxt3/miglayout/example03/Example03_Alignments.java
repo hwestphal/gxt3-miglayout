@@ -40,6 +40,7 @@ public class Example03_Alignments extends ExampleItem {
 
 	public Example03_Alignments() {
 		super(
+				"alignments",
 				"Alignments",
 				"Shows how the alignment of components are specified. At the top/left is the alignment for the column/row. The components have no alignments specified.",
 				new ExampleTab("Horizontal", new Example03_Alignments_Horizontal()), new ExampleTab("Vertical", new Example03_Alignments_Vertical()));

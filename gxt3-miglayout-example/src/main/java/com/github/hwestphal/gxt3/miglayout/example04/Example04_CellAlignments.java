@@ -40,6 +40,7 @@ public class Example04_CellAlignments extends ExampleItem {
 
 	public Example04_CellAlignments() {
 		super(
+				"cellAlignments",
 				"Cell Alignments",
 				"Shows how components are aligned when both column/row alignments and component constraints are specified. At the top/left are the alignment for the column/row and the text on the buttons is the component constraint that will override the column/row alignment if it is an alignment.",
 				new ExampleTab("Horizontal", new Example04_CellAlignments_Horizontal()), new ExampleTab("Vertical", new Example04_CellAlignments_Vertical()));
