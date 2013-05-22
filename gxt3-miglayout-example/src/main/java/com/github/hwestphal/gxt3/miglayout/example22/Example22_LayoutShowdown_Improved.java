@@ -59,23 +59,23 @@ public class Example22_LayoutShowdown_Improved implements IsWidget {
 
 			container.add(createListField("Mouse, Mickey", "Duck, Donald"), "spany, growy, wmin 150");
 
-			container.add(new Label("Last Name"));
+			container.add(new Label("Last Name", false));
 			container.add(new TextField());
-			container.add(new Label("First Name"));
+			container.add(new Label("First Name", false));
 			container.add(new TextField(), "wrap");
 			container.add(new Label("Phone"));
 			container.add(new TextField());
 			container.add(new Label("Email"));
 			container.add(new TextField(), "wrap");
-			container.add(new Label("Address 1"));
+			container.add(new Label("Address 1", false));
 			container.add(new TextField(), "span");
-			container.add(new Label("Address 2"));
+			container.add(new Label("Address 2", false));
 			container.add(new TextField(), "span");
 			container.add(new Label("City"));
 			container.add(new TextField(), "wrap");
 			container.add(new Label("State"));
 			container.add(new TextField());
-			container.add(new Label("Postal Code"));
+			container.add(new Label("Postal Code", false));
 			container.add(new TextField(), "growx 0, wrap");
 			container.add(new Label("Country"));
 			container.add(new TextField(), "wrap 15");

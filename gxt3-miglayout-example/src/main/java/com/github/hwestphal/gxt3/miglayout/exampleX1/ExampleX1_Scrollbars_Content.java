@@ -93,7 +93,7 @@ public class ExampleX1_Scrollbars_Content implements IsWidget {
 
 	private MigLayoutContainer createForm(Overflow overflowMode) {
 		MigLayoutContainer container = new MigLayoutContainer();
-		container.add(new Label("First Name"), "wmin pref, hmin pref");
+		container.add(new Label("First Name", false), "wmin pref, hmin pref");
 		container.add(new TextField(), "wmin pref, hmin pref");
 		container.add(new Label("Surname"), "gap unrelated, wmin pref, hmin pref");
 		container.add(new TextField(), "wrap, wmin pref, hmin pref");

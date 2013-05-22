@@ -123,7 +123,7 @@ public class ExampleX2_GxtForms_Content implements IsWidget, Editor<Contact> {
 			}
 		});
 
-		container.add(new Label(label), labelCC);
+		container.add(new Label(label, false), labelCC);
 		container.add(field, fieldCC);
 		container.add(error, errorCC);
 

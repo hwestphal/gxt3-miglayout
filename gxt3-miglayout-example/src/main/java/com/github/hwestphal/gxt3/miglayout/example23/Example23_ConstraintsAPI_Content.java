@@ -68,23 +68,23 @@ public class Example23_ConstraintsAPI_Content implements IsWidget {
 
 			container.add(createListField("Mouse, Mickey", "Duck, Donald"), cc().spanY().growY().minWidth("150").gapX(null, "10"));
 
-			container.add(new Label("Last Name"));
+			container.add(new Label("Last Name", false));
 			container.add(new TextField());
-			container.add(new Label("First Name"));
+			container.add(new Label("First Name", false));
 			container.add(new TextField(), cc().wrap().alignX("right"));
 			container.add(new Label("Phone"));
 			container.add(new TextField());
 			container.add(new Label("Email"));
 			container.add(new TextField());
-			container.add(new Label("Address 1"));
+			container.add(new Label("Address 1", false));
 			container.add(new TextField(), cc().spanX().growX());
-			container.add(new Label("Address 2"));
+			container.add(new Label("Address 2", false));
 			container.add(new TextField(), cc().spanX().growX());
 			container.add(new Label("City"));
 			container.add(new TextField(), cc().wrap());
 			container.add(new Label("State"));
 			container.add(new TextField());
-			container.add(new Label("Postal Code"));
+			container.add(new Label("Postal Code", false));
 			container.add(new TextField(), cc().spanX(2).growX(0));
 			container.add(new Label("Country"));
 			container.add(new TextField(), cc().wrap());

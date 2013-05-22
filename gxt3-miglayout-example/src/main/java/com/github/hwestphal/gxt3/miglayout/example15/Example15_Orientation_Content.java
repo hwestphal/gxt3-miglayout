@@ -82,9 +82,9 @@ public class Example15_Orientation_Content implements IsWidget {
 	}
 
 	private void addFields(MigLayoutContainer container) {
-		container.add(new Label("Level of Trust"));
+		container.add(new Label("Level of Trust", false));
 		container.add(new TextField(), "span,growx");
-		container.add(new Label("Radar Presentation"));
+		container.add(new Label("Radar Presentation", false));
 		container.add(new TextField());
 		container.add(new TextField());
 	}
