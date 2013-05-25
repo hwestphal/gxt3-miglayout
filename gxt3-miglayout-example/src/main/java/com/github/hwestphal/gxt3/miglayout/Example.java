@@ -37,6 +37,7 @@ import com.github.hwestphal.gxt3.miglayout.example22.Example22_LayoutShowdown;
 import com.github.hwestphal.gxt3.miglayout.example23.Example23_ConstraintsAPI;
 import com.github.hwestphal.gxt3.miglayout.exampleX1.ExampleX1_Scrollbars;
 import com.github.hwestphal.gxt3.miglayout.exampleX2.ExampleX2_GxtForms;
+import com.github.hwestphal.gxt3.miglayout.exampleX3.ExampleX3_MigLayoutVsGxt;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 
@@ -55,6 +56,7 @@ public class Example implements EntryPoint {
 		exampleBrowser.addExample(new Example23_ConstraintsAPI());
 		exampleBrowser.addExample(new ExampleX1_Scrollbars());
 		exampleBrowser.addExample(new ExampleX2_GxtForms());
+		exampleBrowser.addExample(new ExampleX3_MigLayoutVsGxt());
 		RootLayoutPanel.get().add(exampleBrowser);
 	}
 
