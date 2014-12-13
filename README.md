@@ -1,5 +1,7 @@
 # [MiG Layout](http://www.miglayout.com/) Manager for [GXT 3](http://www.sencha.com/products/gxt)
 
+[![Build Status](https://api.travis-ci.org/hwestphal/gxt3-miglayout.svg?branch=master)](https://travis-ci.org/hwestphal/gxt3-miglayout)
+
 See http://hwestphal.github.io/gxt3-miglayout/ for a demo application.
 
 MigLayout and MigLayout examples © Mikael Grev, MiG InfoCom AB
